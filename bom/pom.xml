@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.sf.m-m-m</groupId>
+    <artifactId>mmm-orient</artifactId>
+    <version>dev-SNAPSHOT</version>
+  </parent>
+  <artifactId>mmm-orient-bom</artifactId>
+  <version>${net.sf.mmm.orient.version}</version>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  <description>Bill of materials (BOM) for mmm-orient.</description>
+
+  <properties>
+    <mmm.flatten.mode>bom</mmm.flatten.mode>
+    <orientdb.version>2.1.9</orientdb.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- BOM of mmm-util -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-util-bom</artifactId>
+        <version>${net.sf.mmm.util.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- OrientDB-->
+      <dependency>
+        <groupId>com.orientechnologies</groupId>
+        <artifactId>orientdb-core</artifactId>
+        <version>${orientdb.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.orientechnologies</groupId>
+        <artifactId>orientdb-server</artifactId>
+        <version>${orientdb.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.orientechnologies</groupId>
+        <artifactId>orientdb-jdbc</artifactId>
+        <version>${orientdb.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.orientechnologies</groupId>
+        <artifactId>orientdb-enterprise</artifactId>
+        <version>${orientdb.version}</version>
+      </dependency>
+
+      <!-- Other thirdparty -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>19.0</version>
+      </dependency>
+      
+      
+      <!-- Internal dependencies -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-orient-bean</artifactId>
+        <version>${net.sf.mmm.orient.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-orient-repository</artifactId>
+        <version>${net.sf.mmm.orient.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
