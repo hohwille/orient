@@ -11,7 +11,7 @@ package net.sf.mmm.orient.bean.api;
  * @author hohwille
  * @since 7.1.0
  */
-public interface OrientLink<T extends OrientBean> { // extends SimpleDatatype<String> {
+public interface OrientLink<T extends OrientBean> {
 
   /**
    * @return the {@link OrientBean#Id() primary key} of the linked {@link #getTarget() bean}. When creating new
@@ -21,11 +21,17 @@ public interface OrientLink<T extends OrientBean> { // extends SimpleDatatype<St
   String getId();
 
   /**
+   * @return {@code true} if the {@link #getTarget() link target} is already resolved, {@code false} otherwise (if
+   *         {@link #getTarget()} may trigger lazy loading and could also fail if called without an open transaction).
+   */
+  boolean isResolved();
+
+  /**
    * This method resolves the linked {@link OrientBean}.<br/>
    * <b>ATTENTION:</b><br/>
    * An {@link OrientLink} can be evaluated lazily. In such case the first call of this method will resolve the linked
    * {@link OrientBean} from the database. That can be a relatively expensive operation and requires an open
-   * transaction.<br>
+   * transaction. Use {@link #isResolved()} to distinguish and prevent undesired link resolving.<br>
    * Further, after serialization (e.g. mapping to JSON and back) maybe only the {@link #getId() ID} was transferred and
    * this link can not be resolved. In that case this method may return {@code null}. Please note that {@link #getId()
    * id} and {@link #getTarget() target} can not both be null. In case a link property is empty it will contain

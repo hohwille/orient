@@ -19,8 +19,6 @@ public class OrientConfigProperties {
 
   private String password;
 
-  private int minPoolSize = 1;
-
   private int maxPoolSize = 20;
 
   /**
@@ -79,23 +77,9 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @return the minPoolSize
-   */
-  public int getMinPoolSize() {
-
-    return this.minPoolSize;
-  }
-
-  /**
-   * @param minPoolSize is the minPoolSize to set
-   */
-  public void setMinPoolSize(int minPoolSize) {
-
-    this.minPoolSize = minPoolSize;
-  }
-
-  /**
-   * @return the maxPoolSize
+   * @see com.orientechnologies.orient.core.db.OPartitionedDatabasePoolFactory#getMaxPoolSize()
+   *
+   * @return the maximum size of open connections in the database pool.
    */
   public int getMaxPoolSize() {
 
@@ -103,7 +87,7 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @param maxPoolSize is the maxPoolSize to set
+   * @param maxPoolSize the new value of {@link #getMaxPoolSize()}.
    */
   public void setMaxPoolSize(int maxPoolSize) {
 

@@ -2,57 +2,58 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.bean.impl;
 
+import com.orientechnologies.orient.core.record.impl.ODocument;
+
 import net.sf.mmm.orient.bean.api.OrientBean;
+import net.sf.mmm.orient.db.impl.OrientBeanMapper;
+import net.sf.mmm.orient.db.impl.OrientDatabase;
 
 /**
- * Implementation of {@link OrientLinkDocument} only containing an {@link #getId()}.
+ * Implementation of {@link OrientLinkDocumentLazy} only containing an {@link #getId()}.
  *
  * @param <T> the generic type of the {@link #getTarget() linked} {@link OrientBean}.
  *
  * @author hohwille
  * @since 7.1.0
  */
-public class OrientLinkIdLazy<T extends OrientBean> extends OrientLinkId<T> {
+public class OrientLinkIdLazy<T extends OrientBean> extends LazyOrientLink<T> {
 
-  private T target;
+  private OrientDatabase database;
 
   /**
    * The constructor.
    *
    * @param id the {@link #getId() ID}.
+   * @param beanMapper the {@link OrientBeanMapper}.
+   * @param database the {@link OrientDatabase}.
    */
-  public OrientLinkIdLazy(String id) {
-    super(id);
-    this.target = null;
+  public OrientLinkIdLazy(String id, OrientBeanMapper beanMapper, OrientDatabase database) {
+    super(id, beanMapper);
+    this.database = database;
   }
 
   @Override
-  public T getTarget() {
+  protected ODocument resolveLinkedDocument() {
 
-    if (this.target == null) {
-      this.target = resolveLink();
-    }
-    return this.target;
-  }
-
-  protected T resolveLink() {
-
-    // return (T) OrientDatabase.getInstance().load(this.id);
-    return null;
+    ODocument document = this.database.find(getId());
+    this.database = null;
+    return document;
   }
 
   /**
-   *
-   * @param <T>
-   * @param id
-   * @return
+   * @param <T> the generic type of the {@link #getTarget() linked} {@link OrientBean}.
+   * @param id the {@link #getId() ID}.
+   * @param beanMapper the {@link OrientBeanMapper}.
+   * @param database the {@link OrientDatabase}.
+   * @return the new link.
    */
-  public static <T extends OrientBean> OrientLinkIdLazy<T> valueOf(String id) {
+  public static <T extends OrientBean> OrientLinkIdLazy<T> valueOf(String id, OrientBeanMapper beanMapper,
+      OrientDatabase database) {
 
     if (id == null) {
       return null;
     }
-    return new OrientLinkIdLazy<>(id);
+    return new OrientLinkIdLazy<>(id, beanMapper, database);
   }
 
 }

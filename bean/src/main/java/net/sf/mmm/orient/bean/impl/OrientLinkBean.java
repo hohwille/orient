@@ -28,6 +28,12 @@ public class OrientLinkBean<T extends OrientBean> extends AbstractOrientLink<T> 
   }
 
   @Override
+  public boolean isResolved() {
+
+    return true;
+  }
+
+  @Override
   public String getId() {
 
     return this.bean.getId();

@@ -9,7 +9,7 @@ import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.ResourceTransactionManager;
 
 /**
- * TODO: this class ...
+ * Implementation of {@link AbstractPlatformTransactionManager} to integrate OrientDB with Spring-TX.
  *
  * @author hohwille
  * @since 1.0.0
@@ -35,30 +35,39 @@ public class OrientPlatformTransactionManager extends AbstractPlatformTransactio
   @Override
   protected Object doGetTransaction() throws TransactionException {
 
-    // TODO Auto-generated method stub
-    // TransactionSynchronizationManager.getResource();
-    return null;
+    return new OrientTx(this.database);
   }
 
   @Override
   protected void doBegin(Object transaction, TransactionDefinition definition) throws TransactionException {
 
-    // TODO Auto-generated method stub
-
+    OrientTx.of(transaction).begin();
   }
 
   @Override
   protected void doCommit(DefaultTransactionStatus status) throws TransactionException {
 
-    // TODO Auto-generated method stub
-
+    OrientTx.of(status).commit();
   }
 
   @Override
   protected void doRollback(DefaultTransactionStatus status) throws TransactionException {
 
-    // TODO Auto-generated method stub
+    OrientTx.of(status).rollback();
+  }
 
+  @Override
+  protected void doSetRollbackOnly(DefaultTransactionStatus status) throws TransactionException {
+
+    status.setRollbackOnly();
+    OrientTx.of(status).setRollbackOnly();
+  }
+
+  @Override
+  protected void doCleanupAfterCompletion(Object transaction) {
+
+    super.doCleanupAfterCompletion(transaction);
+    OrientTx.of(transaction).dispose();
   }
 
 }
