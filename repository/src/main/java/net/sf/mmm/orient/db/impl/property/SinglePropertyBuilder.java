@@ -6,9 +6,13 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.bean.api.OrientBean;
+import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.component.api.ComponentSpecification;
+import net.sf.mmm.util.property.api.AbstractProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
+import net.sf.mmm.util.validation.base.AbstractValidator;
+import net.sf.mmm.util.validation.base.text.ValidatorPattern;
 
 /**
  * This is the interface for an {@link AbstractPropertyBuilder} responsible for a single {@link #getType() type} of
@@ -34,7 +38,18 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
     GenericType<V> valueType = getValueType(oProperty);
     Class<? extends WritableProperty<V>> propertyType = getPropertyType(oProperty);
     String propertyName = oProperty.getName();
-    prototype.access().getOrCreateProperty(propertyName, valueType, propertyType);
+    BeanAccess access = prototype.access();
+    WritableProperty<V> property = access.getOrCreateProperty(propertyName, valueType, propertyType);
+    String regexp = oProperty.getRegexp();
+    if (regexp != null) {
+      access.addPropertyValidator(property, new ValidatorPattern(regexp));
+    }
+    String min = oProperty.getMin();
+    String max = oProperty.getMax();
+    if ((min != null) || (max != null)) {
+      AbstractValidator<?> validator = ((AbstractProperty<?>) property).withValdidator().range(min, max).build();
+      access.addPropertyValidator(property, validator);
+    }
   }
 
   /**
