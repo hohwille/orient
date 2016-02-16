@@ -3,6 +3,7 @@
 package net.sf.mmm.orient.db.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,13 +13,14 @@ import javax.inject.Named;
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
+import com.orientechnologies.orient.core.metadata.schema.OSchemaProxy;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.bean.api.Edge;
 import net.sf.mmm.orient.bean.api.OrientBean;
-import net.sf.mmm.orient.bean.api.OrientLink;
 import net.sf.mmm.orient.bean.api.Vertex;
-import net.sf.mmm.orient.bean.impl.OrientLinkDocumentLazy;
+import net.sf.mmm.orient.datatype.api.OrientLink;
+import net.sf.mmm.orient.datatype.impl.OrientLinkDocumentLazy;
 import net.sf.mmm.orient.db.impl.property.PropertyBuilder;
 import net.sf.mmm.orient.db.impl.property.PropertyBuilderImpl;
 import net.sf.mmm.util.bean.api.Bean;
@@ -40,11 +42,15 @@ import net.sf.mmm.util.reflect.impl.SimpleGenericTypeImpl;
 @Named
 public class OrientBeanMapperImpl extends AbstractLoggableComponent implements OrientBeanMapper {
 
-  private final Map<String, OrientBean> name2prototypeMap;
+  private final Map<String, OrientClass> name2classMap;
+
+  private final Map<Class<?>, String> beanClass2nameMap;
 
   private BeanFactory beanFactory;
 
   private PropertyBuilder propertyBuilder;
+
+  private OrientBean documentPrototype;
 
   /**
    * The constructor.
@@ -52,7 +58,8 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
    */
   public OrientBeanMapperImpl() {
     super();
-    this.name2prototypeMap = new HashMap<>();
+    this.name2classMap = new HashMap<>();
+    this.beanClass2nameMap = new HashMap<>();
   }
 
   /**
@@ -72,6 +79,10 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     if (this.propertyBuilder == null) {
       this.propertyBuilder = PropertyBuilderImpl.getInstance();
     }
+    for (OrientClass orientClass : this.name2classMap.values()) {
+      initClass(orientClass);
+    }
+    this.documentPrototype = this.beanFactory.createPrototype(OrientBean.class, true, "Document");
   }
 
   /**
@@ -84,37 +95,147 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
   }
 
   /**
-   * @param bean the {@link OrientBean} to register.
+   * @param beanClass the {@link OrientBean} to register.
    */
-  public void registerBean(Class<? extends OrientBean> bean) {
+  public void registerBean(Class<? extends OrientBean> beanClass) {
 
-    OrientBean prototype = this.beanFactory.createPrototype(bean, true);
+    getInitializationState().requireNotInitilized();
+    register(beanClass);
+  }
+
+  private OrientClass register(Class<? extends OrientBean> beanClass) {
+
+    OrientBean prototype = this.beanFactory.createPrototype(beanClass, true);
     String name = prototype.access().getName();
-    OrientBean old = this.name2prototypeMap.put(name, prototype);
+    OrientClass orientClass = new OrientClass(prototype);
+    OrientClass old = this.name2classMap.put(name, orientClass);
     if (old != null) {
-      throw new DuplicateObjectException(prototype, name, old);
+      throw new DuplicateObjectException(orientClass, name, old);
     }
+    this.beanClass2nameMap.put(beanClass, name);
+    return orientClass;
+  }
+
+  @Override
+  public void syncSchema(OSchemaProxy schema) {
+
+    OrientBeanMapper.super.syncSchema(schema);
+
+    // two-way-sync
+    for (OrientClass orientClass : this.name2classMap.values()) {
+      syncClass(orientClass, schema);
+    }
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private void initClass(OrientClass orientClass) {
+
+    if (orientClass.isSuperClassesInitialized()) {
+      return;
+    }
+    OrientBean prototype = orientClass.getPrototype();
+    BeanAccess access = prototype.access();
+    Class<?> beanClass = access.getBeanClass();
+    Class<?>[] superInterfaces = beanClass.getInterfaces();
+    List<OrientClass> superClasses = orientClass.getSuperClasses();
+    for (Class<?> superBeanClass : superInterfaces) {
+      if (OrientBean.class.isAssignableFrom(superBeanClass)) {
+        String superName = this.beanClass2nameMap.get(superBeanClass);
+        OrientClass superOrientClass;
+        if (superName == null) {
+          superOrientClass = register((Class) superBeanClass);
+          initClass(superOrientClass);
+        } else {
+          superOrientClass = this.name2classMap.get(superName);
+        }
+        superClasses.add(superOrientClass);
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private OClass syncClass(OrientClass orientClass, OSchemaProxy schema) {
+
+    OrientBean prototype = orientClass.getPrototype();
+    BeanAccess access = prototype.access();
+    String name = access.getName();
+    OClass oClass = schema.getClass(name);
+    if (oClass == null) {
+      Class<?> beanClass = access.getBeanClass();
+      if (OrientBean.class.equals(beanClass)) {
+        throw new IllegalStateException();
+      }
+      List<OrientClass> superClasses = orientClass.getSuperClasses();
+      OClass[] oClasses = new OClass[superClasses.size()];
+      int i = 0;
+      for (OrientClass superClass : superClasses) {
+        oClasses[i++] = syncClass(superClass, schema);
+      }
+      oClass = schema.createClass(name, oClasses);
+    }
+    return oClass;
   }
 
   @Override
   public void syncClass(OClass oClass) {
 
     String name = oClass.getName();
-    OrientBean prototype = this.name2prototypeMap.get(name);
-    if (prototype == null) {
-      // TODO...
-      return;
+    OrientClass orientClass = this.name2classMap.get(name);
+    if (orientClass == null) {
+      orientClass = createDynamicClass(oClass);
     }
+    OClass currentOClass = orientClass.getOClass();
+    if (currentOClass == null) {
+      orientClass.setOClass(oClass);
+    } else if (!currentOClass.equals(oClass)) {
+      throw new IllegalStateException("OClass changed for " + orientClass);
+    }
+    OrientBean prototype = orientClass.getPrototype();
     for (OProperty oProperty : oClass.properties()) {
       this.propertyBuilder.build(oProperty, prototype);
     }
   }
 
+  private OrientClass createDynamicClass(OClass oClass) {
+
+    OrientClass orientClass;
+    List<OClass> superClasses = oClass.getSuperClasses();
+    Class<? extends OrientBean> superBeanClass = OrientBean.class;
+    for (OClass superClass : superClasses) {
+      String superName = superClass.getName();
+      if (superName.equals(Vertex.NAME)) {
+        superBeanClass = Vertex.class;
+      } else if (superName.equals(Edge.NAME)) {
+        superBeanClass = Edge.class;
+      }
+    }
+    String name = oClass.getName();
+    OrientBean prototype = this.beanFactory.createPrototype(superBeanClass, true, name);
+    orientClass = new OrientClass(prototype);
+    orientClass.setOClass(oClass);
+    for (OClass superClass : superClasses) {
+      String superName = superClass.getName();
+      OrientClass superOrientClass = this.name2classMap.get(superName);
+      if (superOrientClass == null) {
+        superOrientClass = createDynamicClass(superClass);
+      }
+      orientClass.getSuperClasses().add(superOrientClass);
+    }
+    this.name2classMap.put(name, orientClass);
+    return orientClass;
+  }
+
   @Override
   public OrientBean getBeanPrototype(OClass oClass) {
 
-    OrientBean prototype = this.name2prototypeMap.get(oClass.getName());
-    return prototype;
+    if (oClass == null) {
+      return this.documentPrototype;
+    }
+    OrientClass orientClass = this.name2classMap.get(oClass.getName());
+    if (orientClass == null) {
+      orientClass = createDynamicClass(oClass);
+    }
+    return orientClass.getPrototype();
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -177,7 +298,8 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
       }
     }
     for (ReadableProperty<?> property : access.getProperties()) {
-      result.field(property.getName(), property.getValue());
+      Object value = property.getValue();
+      result.field(property.getName(), value);
     }
     return result;
   }

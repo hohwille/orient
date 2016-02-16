@@ -2,6 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.bean.api;
 
+import javax.inject.Named;
+
 import net.sf.mmm.util.bean.api.Bean;
 import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.api.EntityBean;
@@ -22,6 +24,12 @@ import net.sf.mmm.util.property.api.WritableProperty;
  */
 public interface OrientBean extends EntityBean<String> {
 
-  // nothing to add...
+  @Named("@rid")
+  @Override
+  WritableProperty<String> Id();
+
+  @Named("@version")
+  @Override
+  int getVersion();
 
 }

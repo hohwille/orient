@@ -7,6 +7,8 @@ import java.util.Arrays;
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePoolFactory;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.db.record.OIdentifiable;
+import com.orientechnologies.orient.core.db.record.ridbag.ORidBag;
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.iterator.ORecordIteratorClass;
@@ -62,6 +64,21 @@ public class Client {
                 + property.getMin() + ", max:" + property.getMax() + ", defaultValue:" + property.getDefaultValue()
                 + ", fullName:" + property.getFullName() + ", collate:" + property.getCollate());
       }
+
+      ODocument doc = db.load(new ORecordId("#17:501"));
+      System.out.println(Arrays.toString(doc.fieldNames()));
+      ORidBag out = doc.field("out_");
+      System.out.println(out);
+      for (OIdentifiable id : out) {
+        System.out.println(id);
+      }
+      System.out.println(out.getClass());
+      ORidBag outTE = doc.field("out_TypedEdge");
+      System.out.println(outTE);
+      for (OIdentifiable id : outTE) {
+        System.out.println(id.getIdentity());
+      }
+      System.out.println(outTE.getClass());
     } finally {
       db.close();
       factory.close();

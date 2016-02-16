@@ -1,9 +1,9 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package net.sf.mmm.orient.bean.impl;
+package net.sf.mmm.orient.datatype.base;
 
 import net.sf.mmm.orient.bean.api.OrientBean;
-import net.sf.mmm.orient.bean.api.OrientLink;
+import net.sf.mmm.orient.datatype.api.OrientLink;
 
 /**
  * Implementation of {@link OrientLink} based on an already resolved {@link OrientBean}.

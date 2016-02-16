@@ -5,14 +5,19 @@ package net.sf.mmm.orient.bean.api;
 import javax.inject.Named;
 
 /**
- * TODO: this class ...
+ * This is the interface for a vertex. It represents the predefined
+ * {@link com.orientechnologies.orient.core.metadata.schema.OClass OrientDB Class} called {@code V}.
  *
  * @author hohwille
  * @since 1.0.0
  */
-@Named("V")
+@Named(Vertex.NAME)
 public interface Vertex extends OrientBean {
 
-  // nothing to add...
+  /**
+   * The {@link net.sf.mmm.util.bean.api.BeanAccess#getName() name} corresponding to
+   * {@link com.orientechnologies.orient.core.metadata.schema.OClass#getName()}.
+   */
+  String NAME = "V";
 
 }

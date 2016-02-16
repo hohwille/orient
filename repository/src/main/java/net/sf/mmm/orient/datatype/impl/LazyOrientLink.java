@@ -1,11 +1,12 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package net.sf.mmm.orient.bean.impl;
+package net.sf.mmm.orient.datatype.impl;
 
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.bean.api.OrientBean;
-import net.sf.mmm.orient.bean.api.OrientLink;
+import net.sf.mmm.orient.datatype.api.OrientLink;
+import net.sf.mmm.orient.datatype.base.AbstractOrientLink;
 import net.sf.mmm.orient.db.impl.OrientBeanMapper;
 
 /**

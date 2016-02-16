@@ -131,10 +131,8 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     registerBuilder(new SinglePropertyBuilderShort());
     registerBuilder(new SinglePropertyBuilderByte());
 
-    registerBuilder(new SinglePropertyBuilderDouble());
-    registerBuilder(new SinglePropertyBuilderDouble());
-    registerBuilder(new SinglePropertyBuilderDouble());
-    registerBuilder(new SinglePropertyBuilderDouble());
+    registerBuilder(new SinglePropertyBuilderLink());
+    registerBuilder(new SinglePropertyBuilderLinkList());
   }
 
   @Override

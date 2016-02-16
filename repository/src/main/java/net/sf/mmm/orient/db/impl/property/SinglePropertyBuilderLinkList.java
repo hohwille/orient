@@ -9,32 +9,33 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
+import javafx.collections.ObservableList;
 import net.sf.mmm.orient.bean.api.OrientBean;
 import net.sf.mmm.orient.datatype.api.OrientLink;
 import net.sf.mmm.orient.db.impl.OrientBeanMapper;
-import net.sf.mmm.orient.property.api.LinkProperty;
+import net.sf.mmm.orient.property.api.LinkListProperty;
 import net.sf.mmm.util.component.api.ResourceMissingException;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**
- * The implementation of {@link SinglePropertyBuilder} for {@link OType#LINK}.
+ * The implementation of {@link SinglePropertyBuilder} for {@link OType#LINKLIST}.
  *
  * @author hohwille
  * @since 1.0.0
  */
 @SuppressWarnings("rawtypes")
 @Named
-public class SinglePropertyBuilderLink extends AbstractLoggableComponent
-    implements SinglePropertyBuilder<OrientLink> {
+public class SinglePropertyBuilderLinkList extends AbstractLoggableComponent
+    implements SinglePropertyBuilder<ObservableList<OrientLink>> {
 
   private OrientBeanMapper beanMapper;
 
   /**
    * The constructor.
    */
-  public SinglePropertyBuilderLink() {
+  public SinglePropertyBuilderLinkList() {
     super();
   }
 
@@ -59,19 +60,19 @@ public class SinglePropertyBuilderLink extends AbstractLoggableComponent
   @Override
   public OType getType() {
 
-    return OType.LINK;
+    return OType.LINKLIST;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public Class<? extends WritableProperty<OrientLink>> getPropertyType(OProperty oProperty) {
+  public Class<? extends WritableProperty<ObservableList<OrientLink>>> getPropertyType(OProperty oProperty) {
 
-    return (Class) LinkProperty.class;
+    return (Class) LinkListProperty.class;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public GenericType<OrientLink> getValueType(OProperty oProperty) {
+  public GenericType<ObservableList<OrientLink>> getValueType(OProperty oProperty) {
 
     Class beanClass = null;
     OClass linkedClass = oProperty.getLinkedClass();
@@ -81,7 +82,7 @@ public class SinglePropertyBuilderLink extends AbstractLoggableComponent
         beanClass = prototype.access().getBeanClass();
       }
     }
-    GenericType genericType = LinkProperty.createLinkType(beanClass);
+    GenericType genericType = LinkListProperty.createLinkType(beanClass);
     return genericType;
   }
 
