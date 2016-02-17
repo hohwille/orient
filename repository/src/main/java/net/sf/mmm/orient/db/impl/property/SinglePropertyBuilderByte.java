@@ -8,7 +8,7 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.util.property.api.ByteProperty;
-import net.sf.mmm.util.property.api.ReadableNumberProperty;
+import net.sf.mmm.util.property.api.ReadableByteProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
@@ -35,15 +35,21 @@ public class SinglePropertyBuilderByte implements SinglePropertyBuilder<Number> 
   }
 
   @Override
+  public Class<Byte> getValueClass() {
+
+    return Byte.class;
+  }
+
+  @Override
   public Class<? extends WritableProperty<Number>> getPropertyType(OProperty oProperty) {
 
     return ByteProperty.class;
   }
 
   @Override
-  public GenericType<Number> getValueType(OProperty oProperty) {
+  public GenericType<Byte> getValueType(OProperty oProperty) {
 
-    return ReadableNumberProperty.TYPE;
+    return ReadableByteProperty.TYPE;
   }
 
 }

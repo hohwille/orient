@@ -7,6 +7,7 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import net.sf.mmm.orient.bean.api.OrientBean;
 import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.api.BeanFactory;
+import net.sf.mmm.util.property.api.WritableProperty;
 
 /**
  * This is the abstract interface used to {@link #build(OProperty, OrientBean) build} missing properties.
@@ -26,7 +27,10 @@ public abstract interface AbstractPropertyBuilder {
    *
    * @param oProperty the {@link OProperty}.
    * @param prototype the {@link OrientBean} {@link BeanFactory#createPrototype(Class, boolean) prototype}.
+   * @return the {@link WritableProperty property} corresponding to the given {@link OProperty} that has been created or
+   *         was already existing. May be {@code null} if the {@link OProperty#getType() property type} is not supported
+   *         (e.g. if new version of OrientDB introduces new property type that has not yet been implemented here).
    */
-  void build(OProperty oProperty, OrientBean prototype);
+  WritableProperty<?> build(OProperty oProperty, OrientBean prototype);
 
 }

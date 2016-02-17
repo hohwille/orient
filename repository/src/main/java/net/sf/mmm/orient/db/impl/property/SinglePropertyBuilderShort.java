@@ -7,7 +7,7 @@ import javax.inject.Named;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
-import net.sf.mmm.util.property.api.ReadableNumberProperty;
+import net.sf.mmm.util.property.api.ReadableShortProperty;
 import net.sf.mmm.util.property.api.ShortProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
@@ -35,15 +35,21 @@ public class SinglePropertyBuilderShort implements SinglePropertyBuilder<Number>
   }
 
   @Override
+  public Class<Short> getValueClass() {
+
+    return Short.class;
+  }
+
+  @Override
   public Class<? extends WritableProperty<Number>> getPropertyType(OProperty oProperty) {
 
     return ShortProperty.class;
   }
 
   @Override
-  public GenericType<Number> getValueType(OProperty oProperty) {
+  public GenericType<Short> getValueType(OProperty oProperty) {
 
-    return ReadableNumberProperty.TYPE;
+    return ReadableShortProperty.TYPE;
   }
 
 }

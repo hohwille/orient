@@ -35,6 +35,12 @@ public class SinglePropertyBuilderString implements SinglePropertyBuilder<String
   }
 
   @Override
+  public Class<String> getValueClass() {
+
+    return String.class;
+  }
+
+  @Override
   public Class<? extends WritableProperty<String>> getPropertyType(OProperty oProperty) {
 
     return StringProperty.class;

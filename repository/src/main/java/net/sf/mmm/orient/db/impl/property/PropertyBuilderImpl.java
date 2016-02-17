@@ -10,12 +10,15 @@ import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.bean.api.OrientBean;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.exception.api.DuplicateObjectException;
+import net.sf.mmm.util.property.api.WritableProperty;
+import net.sf.mmm.util.reflect.api.GenericType;
 
 /**
  * This is the implementation of {@link PropertyBuilder}.
@@ -30,12 +33,15 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
 
   private final Map<OType, SinglePropertyBuilder<?>> type2builderMap;
 
+  private final Map<Class<?>, SinglePropertyBuilder<?>> class2builderMap;
+
   /**
    * The constructor.
    */
   public PropertyBuilderImpl() {
     super();
     this.type2builderMap = new HashMap<>();
+    this.class2builderMap = new HashMap<>();
   }
 
   /**
@@ -68,6 +74,12 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     OType type = builder.getType();
     Objects.requireNonNull(type, "type");
     SinglePropertyBuilder<?> old = this.type2builderMap.put(type, builder);
+    if ((old != null) && !allowOverride) {
+      throw new DuplicateObjectException(builder, type, old);
+    }
+    Class<?> valueClass = builder.getValueClass();
+    Objects.requireNonNull(valueClass, "valueClass");
+    old = this.class2builderMap.put(valueClass, builder);
     if ((old != null) && !allowOverride) {
       throw new DuplicateObjectException(builder, type, old);
     }
@@ -130,6 +142,7 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     registerBuilder(new SinglePropertyBuilderInteger());
     registerBuilder(new SinglePropertyBuilderShort());
     registerBuilder(new SinglePropertyBuilderByte());
+    registerBuilder(new SinglePropertyBuilderAny());
 
     registerBuilder(new SinglePropertyBuilderLink());
     registerBuilder(new SinglePropertyBuilderLinkList());
@@ -141,16 +154,36 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     return this.type2builderMap.get(type);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public void build(OProperty oProperty, OrientBean prototype) {
+  public <V> SinglePropertyBuilder<? super V> getBuilder(Class<V> type) {
+
+    return (SinglePropertyBuilder<? super V>) this.class2builderMap.get(type);
+  }
+
+  @Override
+  public WritableProperty<?> build(OProperty oProperty, OrientBean prototype) {
 
     OType type = oProperty.getType();
     SinglePropertyBuilder<?> builder = getBuilder(type);
     if (builder == null) {
       getLogger().debug("Ignoring property {} due to unsupported type {}.", oProperty.getFullName(), type);
-      return;
+      return null;
     }
-    builder.build(oProperty, prototype);
+    return builder.build(oProperty, prototype);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <V> OProperty build(WritableProperty<V> property, OClass oClass) {
+
+    GenericType<? extends V> type = property.getType();
+    SinglePropertyBuilder<V> builder = (SinglePropertyBuilder<V>) getBuilder(type.getRetrievalClass());
+    if (builder == null) {
+      getLogger().debug("Ignoring property {} due to unsupported type {}.", property.getName(), type);
+      return null;
+    }
+    return builder.build(property, oClass);
   }
 
 }

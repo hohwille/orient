@@ -24,11 +24,17 @@ import net.sf.mmm.util.property.api.WritableProperty;
  */
 public interface OrientBean extends EntityBean<String> {
 
-  @Named("@rid")
+  /** {@link BeanAccess#getPropertyNameForAlias(String) alias} for {@link #Id()}. */
+  String PROPERTY_ALIAS_ID = "@rid";
+
+  /** {@link BeanAccess#getPropertyNameForAlias(String) alias} for {@link #Version()}. */
+  String PROPERTY_ALIAS_VERSION = "@version";
+
+  @Named(PROPERTY_ALIAS_ID)
   @Override
   WritableProperty<String> Id();
 
-  @Named("@version")
+  @Named(PROPERTY_ALIAS_VERSION)
   @Override
   int getVersion();
 

@@ -3,9 +3,11 @@
 package net.sf.mmm.orient.db.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -153,9 +155,9 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     }
   }
 
-  @SuppressWarnings("unchecked")
   private OClass syncClass(OrientClass orientClass, OSchemaProxy schema) {
 
+    // only create OClass if not exists, OProperty created afterwards in syncClass(OClass)
     OrientBean prototype = orientClass.getPrototype();
     BeanAccess access = prototype.access();
     String name = access.getName();
@@ -191,8 +193,18 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
       throw new IllegalStateException("OClass changed for " + orientClass);
     }
     OrientBean prototype = orientClass.getPrototype();
+    Set<String> propertyNames = new HashSet<>(prototype.access().getPropertyNames());
+    // for each property in OrientDB class create corresponding property in according OrientBean
     for (OProperty oProperty : oClass.properties()) {
-      this.propertyBuilder.build(oProperty, prototype);
+      WritableProperty<?> property = this.propertyBuilder.build(oProperty, prototype);
+      if (property != null) {
+        propertyNames.remove(property.getName());
+      }
+    }
+    // for each property in OrinetBean prototype create corresponding property in according OrientDB class
+    for (String propertyName : propertyNames) {
+      WritableProperty<?> property = prototype.access().getProperty(propertyName);
+      this.propertyBuilder.build(property, oClass);
     }
   }
 
@@ -236,6 +248,17 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
       orientClass = createDynamicClass(oClass);
     }
     return orientClass.getPrototype();
+  }
+
+  @Override
+  public OClass getOClass(Class<? extends OrientBean> beanClass) {
+
+    String beanName = this.beanClass2nameMap.get(beanClass);
+    OrientClass orientClass = this.name2classMap.get(beanName);
+    if (orientClass == null) {
+      return null;
+    }
+    return orientClass.getOClass();
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

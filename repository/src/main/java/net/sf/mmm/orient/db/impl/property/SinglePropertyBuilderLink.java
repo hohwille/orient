@@ -2,7 +2,6 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.db.impl.property;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.orientechnologies.orient.core.metadata.schema.OClass;
@@ -11,10 +10,7 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.bean.api.OrientBean;
 import net.sf.mmm.orient.datatype.api.OrientLink;
-import net.sf.mmm.orient.db.impl.OrientBeanMapper;
 import net.sf.mmm.orient.property.api.LinkProperty;
-import net.sf.mmm.util.component.api.ResourceMissingException;
-import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
@@ -26,10 +22,7 @@ import net.sf.mmm.util.reflect.api.GenericType;
  */
 @SuppressWarnings("rawtypes")
 @Named
-public class SinglePropertyBuilderLink extends AbstractLoggableComponent
-    implements SinglePropertyBuilder<OrientLink> {
-
-  private OrientBeanMapper beanMapper;
+public class SinglePropertyBuilderLink extends SinglePropertyBuilderLinkBase<OrientLink> {
 
   /**
    * The constructor.
@@ -38,28 +31,16 @@ public class SinglePropertyBuilderLink extends AbstractLoggableComponent
     super();
   }
 
-  /**
-   * @param beanMapper is the OrientBeanMapper to {@link Inject}.
-   */
-  @Inject
-  public void setBeanMapper(OrientBeanMapper beanMapper) {
-
-    this.beanMapper = beanMapper;
-  }
-
-  @Override
-  protected void doInitialize() {
-
-    super.doInitialize();
-    if (this.beanMapper == null) {
-      throw new ResourceMissingException("beanMapper");
-    }
-  }
-
   @Override
   public OType getType() {
 
     return OType.LINK;
+  }
+
+  @Override
+  public Class<OrientLink> getValueClass() {
+
+    return OrientLink.class;
   }
 
   @SuppressWarnings("unchecked")
@@ -69,20 +50,24 @@ public class SinglePropertyBuilderLink extends AbstractLoggableComponent
     return (Class) LinkProperty.class;
   }
 
+  @Override
+  protected GenericType getValueType(Class<? extends OrientBean> beanClass) {
+
+    return LinkProperty.createLinkType(beanClass);
+  }
+
   @SuppressWarnings("unchecked")
   @Override
-  public GenericType<OrientLink> getValueType(OProperty oProperty) {
+  protected OClass getLinkedClass(WritableProperty<OrientLink> property) {
 
-    Class beanClass = null;
-    OClass linkedClass = oProperty.getLinkedClass();
-    if (linkedClass != null) {
-      OrientBean prototype = this.beanMapper.getBeanPrototype(linkedClass);
-      if (prototype != null) {
-        beanClass = prototype.access().getBeanClass();
-      }
+    GenericType<? extends OrientLink> type = property.getType();
+    assert (type.getRetrievalClass() == OrientLink.class);
+    int typeCount = type.getTypeArgumentCount();
+    if (typeCount == 1) {
+      GenericType<?> linkedType = type.getTypeArgument(0);
+      return getBeanMapper().getOClass((Class) linkedType.getRetrievalClass());
     }
-    GenericType genericType = LinkProperty.createLinkType(beanClass);
-    return genericType;
+    return null;
   }
 
 }

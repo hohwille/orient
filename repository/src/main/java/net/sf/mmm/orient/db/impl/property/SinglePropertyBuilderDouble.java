@@ -8,7 +8,7 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.util.property.api.DoubleProperty;
-import net.sf.mmm.util.property.api.ReadableNumberProperty;
+import net.sf.mmm.util.property.api.ReadableDoubleProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
@@ -35,15 +35,21 @@ public class SinglePropertyBuilderDouble implements SinglePropertyBuilder<Number
   }
 
   @Override
+  public Class<Double> getValueClass() {
+
+    return Double.class;
+  }
+
+  @Override
   public Class<? extends WritableProperty<Number>> getPropertyType(OProperty oProperty) {
 
     return DoubleProperty.class;
   }
 
   @Override
-  public GenericType<Number> getValueType(OProperty oProperty) {
+  public GenericType<Double> getValueType(OProperty oProperty) {
 
-    return ReadableNumberProperty.TYPE;
+    return ReadableDoubleProperty.TYPE;
   }
 
 }

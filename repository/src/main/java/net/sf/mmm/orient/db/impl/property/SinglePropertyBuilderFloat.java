@@ -8,7 +8,7 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.util.property.api.FloatProperty;
-import net.sf.mmm.util.property.api.ReadableNumberProperty;
+import net.sf.mmm.util.property.api.ReadableFloatProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
@@ -35,15 +35,21 @@ public class SinglePropertyBuilderFloat implements SinglePropertyBuilder<Number>
   }
 
   @Override
+  public Class<Float> getValueClass() {
+
+    return Float.class;
+  }
+
+  @Override
   public Class<? extends WritableProperty<Number>> getPropertyType(OProperty oProperty) {
 
     return FloatProperty.class;
   }
 
   @Override
-  public GenericType<Number> getValueType(OProperty oProperty) {
+  public GenericType<Float> getValueType(OProperty oProperty) {
 
-    return ReadableNumberProperty.TYPE;
+    return ReadableFloatProperty.TYPE;
   }
 
 }

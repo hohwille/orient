@@ -33,6 +33,12 @@ public class SinglePropertyBuilderAny implements SinglePropertyBuilder<Object> {
     return OType.ANY;
   }
 
+  @Override
+  public Class<?> getValueClass() {
+
+    return Object.class;
+  }
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public Class<? extends WritableProperty<Object>> getPropertyType(OProperty oProperty) {

@@ -2,6 +2,10 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.db.impl.property;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
@@ -31,25 +35,61 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
    */
   OType getType();
 
+  /**
+   * @return the static and raw {@link Class} of the {@link WritableProperty#getType() bean property value type} this
+   *         {@link SinglePropertyBuilder} is responsible for.
+   */
+  Class<? extends V> getValueClass();
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  default void build(OProperty oProperty, OrientBean prototype) {
+  default WritableProperty<V> build(OProperty oProperty, OrientBean prototype) {
 
     assert (oProperty.getType() == getType());
-    GenericType<V> valueType = getValueType(oProperty);
+    GenericType<? extends V> valueType = getValueType(oProperty);
     Class<? extends WritableProperty<V>> propertyType = getPropertyType(oProperty);
     String propertyName = oProperty.getName();
     BeanAccess access = prototype.access();
     WritableProperty<V> property = access.getOrCreateProperty(propertyName, valueType, propertyType);
+
+    // sync validators
+    List<AbstractValidator<? super V>> validators = null;
     String regexp = oProperty.getRegexp();
     if (regexp != null) {
-      access.addPropertyValidator(property, new ValidatorPattern(regexp));
+      validators = new ArrayList<>(2);
+      validators.add((AbstractValidator) new ValidatorPattern(regexp));
     }
     String min = oProperty.getMin();
     String max = oProperty.getMax();
     if ((min != null) || (max != null)) {
-      AbstractValidator<?> validator = ((AbstractProperty<?>) property).withValdidator().range(min, max).build();
-      access.addPropertyValidator(property, validator);
+      if (validators == null) {
+        validators = new ArrayList<>(1);
+      }
+      AbstractValidator validator = ((AbstractProperty<V>) property).withValdidator().range(min, max).build();
+      validators.add(validator);
     }
+    if (validators != null) {
+      access.addPropertyValidators(property, validators);
+    }
+    return property;
+  }
+
+  /**
+   * @param property the {@link WritableProperty property} to create in the given {@link OClass}, that is currently
+   *        missing.
+   * @param oClass the {@link OClass} of the OrientDB schema.
+   * @return the created {@link OProperty}. May be {@code null} if the {@link WritableProperty#getType() property type}
+   *         is not supported.
+   */
+  default OProperty build(WritableProperty<V> property, OClass oClass) {
+
+    String name = property.getName();
+    return oClass.createProperty(name, getType());
+    // OProperty oProperty = oClass.getProperty(name);
+    // if (oProperty == null) {
+    // oProperty = create(property, oClass);
+    // }
+    // return oProperty;
   }
 
   /**
@@ -63,6 +103,6 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
    * @param oProperty the {@link OProperty}.
    * @return the {@link GenericType} reflecting the corresponding {@link WritableProperty#getType() value type}.
    */
-  GenericType<V> getValueType(OProperty oProperty);
+  GenericType<? extends V> getValueType(OProperty oProperty);
 
 }

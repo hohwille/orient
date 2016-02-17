@@ -44,7 +44,11 @@ public interface OrientBeanMapper {
    */
   OrientBean getBeanPrototype(OClass oClass);
 
-  // OClass getOClass(Class<? extends OrientBean> beanClass);
+  /**
+   * @param beanClass the {@link OrientBean}-{@link Class}.
+   * @return the corresponding {@link OClass}.
+   */
+  OClass getOClass(Class<? extends OrientBean> beanClass);
 
   /**
    * @see #map2Bean(ODocument, OrientBean)
