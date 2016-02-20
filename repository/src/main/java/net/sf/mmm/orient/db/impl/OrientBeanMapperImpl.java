@@ -121,12 +121,16 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
   @Override
   public void syncSchema(OSchemaProxy schema) {
 
-    OrientBeanMapper.super.syncSchema(schema);
-
-    // two-way-sync
+    getLogger().debug("Synchronizing OrientDB schema started...");
+    // two-way-sync:
+    // 1. create missing OClasses for Java OrientBean model
     for (OrientClass orientClass : this.name2classMap.values()) {
       syncClass(orientClass, schema);
     }
+    getLogger().debug("Creation of missing OClasses completed...");
+    // 2. sync OrientDB schema with Java OrientBean model (including two-way-sync of properties)
+    OrientBeanMapper.super.syncSchema(schema);
+    getLogger().debug("Synchronizing OrientDB schema completed...");
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -174,8 +178,19 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
         oClasses[i++] = syncClass(superClass, schema);
       }
       oClass = schema.createClass(name, oClasses);
+      if (isAbstract(prototype)) {
+        oClass.setAbstract(true);
+      }
     }
     return oClass;
+  }
+
+  private boolean isAbstract(OrientBean prototype) {
+
+    if (prototype.access().getName().startsWith("Abstract")) {
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -193,7 +208,8 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
       throw new IllegalStateException("OClass changed for " + orientClass);
     }
     OrientBean prototype = orientClass.getPrototype();
-    Set<String> propertyNames = new HashSet<>(prototype.access().getPropertyNames());
+    BeanAccess access = prototype.access();
+    Set<String> propertyNames = new HashSet<>(access.getPropertyNames());
     // for each property in OrientDB class create corresponding property in according OrientBean
     for (OProperty oProperty : oClass.properties()) {
       WritableProperty<?> property = this.propertyBuilder.build(oProperty, prototype);
@@ -203,7 +219,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     }
     // for each property in OrinetBean prototype create corresponding property in according OrientDB class
     for (String propertyName : propertyNames) {
-      WritableProperty<?> property = prototype.access().getProperty(propertyName);
+      WritableProperty<?> property = access.getProperty(propertyName);
       this.propertyBuilder.build(property, oClass);
     }
   }

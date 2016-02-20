@@ -7,9 +7,9 @@ import javax.inject.Named;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
-import net.sf.mmm.util.property.api.ReadableStringProperty;
-import net.sf.mmm.util.property.api.StringProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
+import net.sf.mmm.util.property.api.lang.ReadableStringProperty;
+import net.sf.mmm.util.property.api.lang.StringProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**

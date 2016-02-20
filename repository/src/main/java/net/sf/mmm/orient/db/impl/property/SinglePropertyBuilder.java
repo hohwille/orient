@@ -95,7 +95,7 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
   /**
    * @param oProperty the {@link OProperty}.
    * @return the {@link Class} reflecting the corresponding {@link WritableProperty} type such as e.g.
-   *         {@link net.sf.mmm.util.property.api.StringProperty} for {@link OType#STRING}.
+   *         {@link net.sf.mmm.util.property.api.lang.StringProperty} for {@link OType#STRING}.
    */
   Class<? extends WritableProperty<V>> getPropertyType(OProperty oProperty);
 

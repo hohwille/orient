@@ -8,8 +8,8 @@ import javafx.collections.ObservableList;
 import net.sf.mmm.orient.bean.api.OrientBean;
 import net.sf.mmm.orient.datatype.api.OrientLink;
 import net.sf.mmm.util.bean.api.Bean;
-import net.sf.mmm.util.property.api.GenericProperty;
-import net.sf.mmm.util.property.api.ListProperty;
+import net.sf.mmm.util.property.api.lang.GenericProperty;
+import net.sf.mmm.util.property.api.util.ListProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 import net.sf.mmm.util.validation.base.AbstractValidator;
 

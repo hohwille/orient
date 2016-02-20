@@ -5,7 +5,7 @@ package net.sf.mmm.orient.property.api;
 import net.sf.mmm.orient.bean.api.OrientBean;
 import net.sf.mmm.orient.datatype.api.OrientLink;
 import net.sf.mmm.util.bean.api.Bean;
-import net.sf.mmm.util.property.api.GenericProperty;
+import net.sf.mmm.util.property.api.lang.GenericProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 import net.sf.mmm.util.reflect.base.GenericTypeBuilder;
 import net.sf.mmm.util.reflect.base.GenericTypeVariable;
