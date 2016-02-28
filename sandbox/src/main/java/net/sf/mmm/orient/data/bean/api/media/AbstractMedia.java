@@ -2,7 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.media;
 
-import net.sf.mmm.util.property.api.lang.LongProperty;
+import net.sf.mmm.orient.data.bean.api.AbstractName;
+import net.sf.mmm.util.property.api.lang.StringProperty;
 
 /**
  * TODO: this class ...
@@ -10,8 +11,8 @@ import net.sf.mmm.util.property.api.lang.LongProperty;
  * @author hohwille
  * @since 1.0.0
  */
-public interface AbstractTrack extends AbstractMedia {
+public interface AbstractMedia extends AbstractName {
 
-  LongProperty Length();
+  StringProperty Tags();
 
 }

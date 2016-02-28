@@ -2,8 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api;
 
-import javafx.beans.property.DoubleProperty;
 import net.sf.mmm.orient.bean.api.Vertex;
+import net.sf.mmm.util.property.api.lang.DoubleProperty;
 
 /**
  * This is the abstract base class for a {@link Vertex} that has an optional geo-location with {@link #Longitude()} and

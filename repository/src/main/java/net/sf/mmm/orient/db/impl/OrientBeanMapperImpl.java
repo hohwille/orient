@@ -2,6 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.db.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,11 +30,14 @@ import net.sf.mmm.orient.db.impl.property.PropertyBuilderImpl;
 import net.sf.mmm.util.bean.api.Bean;
 import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.api.BeanFactory;
+import net.sf.mmm.util.bean.impl.BeanFactoryImpl;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.exception.api.DuplicateObjectException;
 import net.sf.mmm.util.exception.api.ObjectMismatchException;
 import net.sf.mmm.util.property.api.ReadableProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
+import net.sf.mmm.util.reflect.api.ReflectionUtil;
+import net.sf.mmm.util.reflect.base.ReflectionUtilImpl;
 import net.sf.mmm.util.reflect.impl.SimpleGenericTypeImpl;
 
 /**
@@ -52,7 +57,11 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
 
   private PropertyBuilder propertyBuilder;
 
+  private ReflectionUtil reflectionUtil;
+
   private OrientBean documentPrototype;
+
+  private List<String> packagesToScan;
 
   /**
    * The constructor.
@@ -74,14 +83,36 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     this.propertyBuilder = propertyBuilder;
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   protected void doInitialize() {
 
     super.doInitialize();
     if (this.propertyBuilder == null) {
-      this.propertyBuilder = PropertyBuilderImpl.getInstance();
+      PropertyBuilderImpl impl = new PropertyBuilderImpl();
+      impl.setBeanMapper(this);
+      impl.initialize();
+      this.propertyBuilder = impl;
     }
-    for (OrientClass orientClass : this.name2classMap.values()) {
+    if (this.beanFactory == null) {
+      this.beanFactory = BeanFactoryImpl.getInstance();
+    }
+    if (this.reflectionUtil == null) {
+      this.reflectionUtil = ReflectionUtilImpl.getInstance();
+    }
+    if (this.packagesToScan != null) {
+      Set<String> classNames = new HashSet<>();
+      for (String packageName : this.packagesToScan) {
+        this.reflectionUtil.findClassNames(packageName, true, classNames);
+      }
+      Set<Class<?>> classes = this.reflectionUtil.loadClasses(classNames,
+          (c) -> OrientBean.class.isAssignableFrom(c));
+      for (Class orientClass : classes) {
+        register(orientClass);
+      }
+    }
+    List<OrientClass> classes = new ArrayList<>(this.name2classMap.values());
+    for (OrientClass orientClass : classes) {
       initClass(orientClass);
     }
     this.documentPrototype = this.beanFactory.createPrototype(OrientBean.class, true, "Document");
@@ -90,16 +121,43 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
   /**
    * {@link #registerBean(Class) Registers} the default {@link OrientBean}s for the standard schema types.
    */
-  public void registerDefaults() {
+  protected void registerDefaults() {
 
     registerBean(Vertex.class);
     registerBean(Edge.class);
   }
 
   /**
+   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}es.
+   */
+  public void setPackagesToScan(List<String> packages) {
+
+    this.packagesToScan = packages;
+  }
+
+  /**
+   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}es.
+   */
+  public void addPackagesToScan(List<String> packages) {
+
+    if (this.packagesToScan == null) {
+      this.packagesToScan = new ArrayList<>();
+    }
+    this.packagesToScan.addAll(packages);
+  }
+
+  /**
+   * @param packages the array of {@link Package packages} to scan for {@link OrientBean}-{@link Class}es.
+   */
+  public void addPackagesToScan(String... packages) {
+
+    addPackagesToScan(Arrays.asList(packages));
+  }
+
+  /**
    * @param beanClass the {@link OrientBean} to register.
    */
-  public void registerBean(Class<? extends OrientBean> beanClass) {
+  protected void registerBean(Class<? extends OrientBean> beanClass) {
 
     getInitializationState().requireNotInitilized();
     register(beanClass);
@@ -107,6 +165,9 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
 
   private OrientClass register(Class<? extends OrientBean> beanClass) {
 
+    if (beanClass == OrientBean.class) {
+      return null;
+    }
     OrientBean prototype = this.beanFactory.createPrototype(beanClass, true);
     String name = prototype.access().getName();
     OrientClass orientClass = new OrientClass(prototype);
@@ -145,7 +206,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     Class<?>[] superInterfaces = beanClass.getInterfaces();
     List<OrientClass> superClasses = orientClass.getSuperClasses();
     for (Class<?> superBeanClass : superInterfaces) {
-      if (OrientBean.class.isAssignableFrom(superBeanClass)) {
+      if (OrientBean.class.isAssignableFrom(superBeanClass) && (OrientBean.class != superBeanClass)) {
         String superName = this.beanClass2nameMap.get(superBeanClass);
         OrientClass superOrientClass;
         if (superName == null) {
@@ -169,7 +230,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     if (oClass == null) {
       Class<?> beanClass = access.getBeanClass();
       if (OrientBean.class.equals(beanClass)) {
-        throw new IllegalStateException();
+        throw new IllegalStateException(name);
       }
       List<OrientClass> superClasses = orientClass.getSuperClasses();
       OClass[] oClasses = new OClass[superClasses.size()];

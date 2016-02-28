@@ -15,6 +15,9 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.bean.api.OrientBean;
+import net.sf.mmm.orient.db.impl.OrientBeanMapper;
+import net.sf.mmm.util.component.api.ResourceMissingException;
+import net.sf.mmm.util.component.base.AbstractComponent;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.exception.api.DuplicateObjectException;
 import net.sf.mmm.util.property.api.WritableProperty;
@@ -29,11 +32,11 @@ import net.sf.mmm.util.reflect.api.GenericType;
 @Named
 public class PropertyBuilderImpl extends AbstractLoggableComponent implements PropertyBuilder {
 
-  private static PropertyBuilderImpl instance;
-
   private final Map<OType, SinglePropertyBuilder<?>> type2builderMap;
 
   private final Map<Class<?>, SinglePropertyBuilder<?>> class2builderMap;
+
+  private OrientBeanMapper beanMapper;
 
   /**
    * The constructor.
@@ -42,6 +45,23 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     super();
     this.type2builderMap = new HashMap<>();
     this.class2builderMap = new HashMap<>();
+  }
+
+  /**
+   * @return the {@link OrientBeanMapper}.
+   */
+  protected OrientBeanMapper getBeanMapper() {
+
+    return this.beanMapper;
+  }
+
+  /**
+   * @param beanMapper is the OrientBeanMapper to {@link Inject}.
+   */
+  @Inject
+  public void setBeanMapper(OrientBeanMapper beanMapper) {
+
+    this.beanMapper = beanMapper;
   }
 
   /**
@@ -71,6 +91,15 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
   protected void registerBuilder(SinglePropertyBuilder<?> builder, boolean allowOverride) {
 
     getInitializationState().requireNotInitilized();
+    if (builder instanceof SinglePropertyBuilderLinkBase) {
+      if (this.beanMapper == null) {
+        throw new ResourceMissingException("beanMapper");
+      }
+      ((SinglePropertyBuilderLinkBase<?>) builder).setBeanMapper(this.beanMapper);
+    }
+    if (builder instanceof AbstractComponent) {
+      ((AbstractComponent) builder).initialize();
+    }
     OType type = builder.getType();
     Objects.requireNonNull(type, "type");
     SinglePropertyBuilder<?> old = this.type2builderMap.put(type, builder);
@@ -92,9 +121,6 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     if (this.type2builderMap.isEmpty()) {
       registerDefaults();
     }
-    if (instance == null) {
-      instance = this;
-    }
   }
 
   @Override
@@ -107,26 +133,6 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
             "Unsupported OrientDB property type {}. Please register corresponding SinglePropertyBuilder.", type);
       }
     }
-  }
-
-  /**
-   * This method gets the singleton instance of this {@link PropertyBuilder}. <br>
-   * <b>ATTENTION:</b><br>
-   * Please read {@link net.sf.mmm.util.component.api.Cdi#GET_INSTANCE} before using.
-   *
-   * @return the singleton instance.
-   */
-  public static PropertyBuilder getInstance() {
-
-    if (instance == null) {
-      synchronized (PropertyBuilderImpl.class) {
-        if (instance == null) {
-          PropertyBuilderImpl impl = new PropertyBuilderImpl();
-          impl.initialize();
-        }
-      }
-    }
-    return instance;
   }
 
   /**
