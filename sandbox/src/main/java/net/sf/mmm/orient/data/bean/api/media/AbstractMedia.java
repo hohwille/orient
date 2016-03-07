@@ -3,16 +3,19 @@
 package net.sf.mmm.orient.data.bean.api.media;
 
 import net.sf.mmm.orient.data.bean.api.AbstractName;
-import net.sf.mmm.util.property.api.lang.StringProperty;
+import net.sf.mmm.util.property.api.lang.StringListProperty;
 
 /**
- * TODO: this class ...
+ * This is the abstract interface for any multi-media object.
  *
  * @author hohwille
  * @since 1.0.0
  */
-public interface AbstractMedia extends AbstractName {
+public abstract interface AbstractMedia extends AbstractName {
 
-  StringProperty Tags();
+  /**
+   * @return an optional list of tags.
+   */
+  StringListProperty Tags();
 
 }

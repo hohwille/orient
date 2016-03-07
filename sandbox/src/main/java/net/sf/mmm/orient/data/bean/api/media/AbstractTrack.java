@@ -2,16 +2,21 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.media;
 
-import net.sf.mmm.util.property.api.lang.LongProperty;
+import net.sf.mmm.util.property.api.time.DurationInSecondsProperty;
 
 /**
- * TODO: this class ...
+ * This is the abstract {@link net.sf.mmm.orient.bean.api.OrientBean} for a multi-media track such as an
+ * {@link net.sf.mmm.orient.data.bean.api.audio.AudioTrack} or a
+ * {@link net.sf.mmm.orient.data.bean.api.video.VideoTrack}.
  *
  * @author hohwille
  * @since 1.0.0
  */
-public interface AbstractTrack extends AbstractMedia {
+public abstract interface AbstractTrack extends AbstractMedia {
 
-  LongProperty Length();
+  /**
+   * @return the duration of the multi-media track in seconds.
+   */
+  DurationInSecondsProperty Length();
 
 }

@@ -10,7 +10,12 @@ import net.sf.mmm.util.property.api.lang.IntegerProperty;
 import net.sf.mmm.util.property.api.lang.StringProperty;
 
 /**
- * TODO: this class ...
+ * This is the {@link net.sf.mmm.orient.bean.api.OrientBean} for an audio {@link AudioTrack track}. It represents the
+ * metadata of a single audio record such as a song, a chapter of an audio-book, etc. Any single audio file (ogg, mp3,
+ * flac, etc.) or any single track on an audio CD corresponds to an {@link AudioTrack}.<br>
+ * Typically an {@link AudioTrack} belongs to an {@link AudioAlbum} that groups the tracks belonging together (e.g. to
+ * an audio CD).<br>
+ *
  *
  * @author hohwille
  * @since 1.0.0

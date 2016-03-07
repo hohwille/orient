@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
@@ -273,14 +274,17 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     Set<String> propertyNames = new HashSet<>(access.getPropertyNames());
     // for each property in OrientDB class create corresponding property in according OrientBean
     for (OProperty oProperty : oClass.properties()) {
-      WritableProperty<?> property = this.propertyBuilder.build(oProperty, prototype);
-      if (property != null) {
-        propertyNames.remove(property.getName());
+      if (oProperty.getOwnerClass() == oClass) {
+        WritableProperty<?> property = this.propertyBuilder.build(oProperty, prototype);
+        if (property != null) {
+          propertyNames.remove(property.getName());
+        }
       }
     }
     // for each property in OrinetBean prototype create corresponding property in according OrientDB class
     for (String propertyName : propertyNames) {
       WritableProperty<?> property = access.getProperty(propertyName);
+
       this.propertyBuilder.build(property, oClass);
     }
   }
@@ -378,6 +382,11 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
         }
       }
     }
+    ORID identity = document.getIdentity();
+    if (identity != null) {
+      result.setId(identity.toString());
+    }
+    result.setVersion(document.getVersion());
     return (BEAN) result;
   }
 

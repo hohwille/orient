@@ -14,14 +14,29 @@ import net.sf.mmm.util.property.api.time.LocalDateProperty;
  */
 public interface Person extends Vertex {
 
+  /**
+   * @return an optional prefix for the name such as an academic title.
+   */
   StringProperty NamePrefix();
 
+  /**
+   * @return the first name (given name).
+   */
   StringProperty FirstName();
 
+  /**
+   * @return optional middle name(s) (additional names).
+   */
   StringProperty MiddleNames();
 
+  /**
+   * @return the last name (family name).
+   */
   StringProperty LastName();
 
+  /**
+   * @return an optional suffix for the name.
+   */
   StringProperty NameSuffix();
 
   StringProperty Gender();

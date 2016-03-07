@@ -5,9 +5,12 @@ package net.sf.mmm.orient;
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
 import com.orientechnologies.orient.core.db.OPartitionedDatabasePoolFactory;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.OMetadataDefault;
+import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.data.bean.api.AbstractCode;
+import net.sf.mmm.orient.data.bean.api.world.Country;
 import net.sf.mmm.orient.db.impl.OrientBeanMapper;
 import net.sf.mmm.orient.db.impl.OrientBeanMapperImpl;
 
@@ -29,6 +32,14 @@ public class Test {
     ODatabaseDocumentTx connection = pool.acquire();
     OMetadataDefault metadata = connection.getMetadata();
     beanMapper.syncSchema(metadata.getSchema());
+    ODocument doc = connection.load(new ORecordId("#17:501"));
+    Country bean = beanMapper.map2Bean(doc);
+    System.out.println(bean);
+    bean.Inhabitants().set(9876543210L);
+    doc = beanMapper.map2Document(bean);
+    Object field = doc.field("Inhabitants");
+    System.out.println(field);
+    doc.save();
     connection.close();
   }
 
