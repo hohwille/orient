@@ -31,6 +31,7 @@ import net.sf.mmm.orient.db.impl.property.PropertyBuilderImpl;
 import net.sf.mmm.util.bean.api.Bean;
 import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.api.BeanFactory;
+import net.sf.mmm.util.bean.api.BeanPrototypeBuilder;
 import net.sf.mmm.util.bean.impl.BeanFactoryImpl;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.exception.api.DuplicateObjectException;
@@ -50,11 +51,15 @@ import net.sf.mmm.util.reflect.impl.SimpleGenericTypeImpl;
 @Named
 public class OrientBeanMapperImpl extends AbstractLoggableComponent implements OrientBeanMapper {
 
+  private static final String PACKAGE_PREFIX = "net.sf.mmm.orient.data.bean.api.";
+
   private final Map<String, OrientClass> name2classMap;
 
   private final Map<Class<?>, String> beanClass2nameMap;
 
   private BeanFactory beanFactory;
+
+  private BeanPrototypeBuilder beanPrototypeBuilder;
 
   private PropertyBuilder propertyBuilder;
 
@@ -98,6 +103,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     if (this.beanFactory == null) {
       this.beanFactory = BeanFactoryImpl.getInstance();
     }
+    this.beanPrototypeBuilder = this.beanFactory.createPrototypeBuilder(true);
     if (this.reflectionUtil == null) {
       this.reflectionUtil = ReflectionUtilImpl.getInstance();
     }
@@ -116,7 +122,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     for (OrientClass orientClass : classes) {
       initClass(orientClass);
     }
-    this.documentPrototype = this.beanFactory.createPrototype(OrientBean.class, true, "Document");
+    this.documentPrototype = this.beanPrototypeBuilder.createPrototype(OrientBean.class, "Document");
   }
 
   /**
@@ -169,8 +175,8 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     if (beanClass == OrientBean.class) {
       return null;
     }
-    OrientBean prototype = this.beanFactory.createPrototype(beanClass, true);
-    String name = prototype.access().getName();
+    OrientBean prototype = this.beanPrototypeBuilder.getOrCreatePrototype(beanClass);
+    String name = prototype.access().getSimpleName();
     OrientClass orientClass = new OrientClass(prototype);
     OrientClass old = this.name2classMap.put(name, orientClass);
     if (old != null) {
@@ -191,7 +197,9 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     }
     getLogger().debug("Creation of missing OClasses completed...");
     // 2. sync OrientDB schema with Java OrientBean model (including two-way-sync of properties)
-    OrientBeanMapper.super.syncSchema(schema);
+    for (OClass oclass : schema.getClasses()) {
+      syncClass(oclass);
+    }
     getLogger().debug("Synchronizing OrientDB schema completed...");
   }
 
@@ -226,7 +234,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     // only create OClass if not exists, OProperty created afterwards in syncClass(OClass)
     OrientBean prototype = orientClass.getPrototype();
     BeanAccess access = prototype.access();
-    String name = access.getName();
+    String name = access.getSimpleName();
     OClass oClass = schema.getClass(name);
     if (oClass == null) {
       Class<?> beanClass = access.getBeanClass();
@@ -249,7 +257,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
 
   private boolean isAbstract(OrientBean prototype) {
 
-    if (prototype.access().getName().startsWith("Abstract")) {
+    if (prototype.access().getSimpleName().startsWith("Abstract")) {
       return true;
     }
     return false;
@@ -274,7 +282,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     Set<String> propertyNames = new HashSet<>(access.getPropertyNames());
     // for each property in OrientDB class create corresponding property in according OrientBean
     for (OProperty oProperty : oClass.properties()) {
-      if (oProperty.getOwnerClass() == oClass) {
+      if ((oProperty.getOwnerClass() == oClass) && (!oProperty.getName().startsWith("_"))) {
         WritableProperty<?> property = this.propertyBuilder.build(oProperty, prototype);
         if (property != null) {
           propertyNames.remove(property.getName());
@@ -293,6 +301,7 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
 
     OrientClass orientClass;
     List<OClass> superClasses = oClass.getSuperClasses();
+    // TODO: properly determine all super-classes...
     Class<? extends OrientBean> superBeanClass = OrientBean.class;
     for (OClass superClass : superClasses) {
       String superName = superClass.getName();
@@ -303,7 +312,8 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
       }
     }
     String name = oClass.getName();
-    OrientBean prototype = this.beanFactory.createPrototype(superBeanClass, true, name);
+    String qualifiedName = PACKAGE_PREFIX + name;
+    OrientBean prototype = this.beanPrototypeBuilder.createPrototype(superBeanClass, qualifiedName);
     orientClass = new OrientClass(prototype);
     orientClass.setOClass(oClass);
     for (OClass superClass : superClasses) {
@@ -401,9 +411,9 @@ public class OrientBeanMapperImpl extends AbstractLoggableComponent implements O
     if (result == null) {
       String id = bean.getId();
       if (id != null) {
-        result = new ODocument(access.getName(), new ORecordId(id));
+        result = new ODocument(access.getSimpleName(), new ORecordId(id));
       } else {
-        result = new ODocument(access.getName());
+        result = new ODocument(access.getSimpleName());
       }
     }
     for (ReadableProperty<?> property : access.getProperties()) {

@@ -17,7 +17,7 @@ import net.sf.mmm.orient.property.api.LinkProperty;
 public interface Edge extends OrientBean {
 
   /**
-   * The {@link net.sf.mmm.util.bean.api.BeanAccess#getName() name} corresponding to
+   * The {@link net.sf.mmm.util.bean.api.BeanAccess#getSimpleName() name} corresponding to
    * {@link com.orientechnologies.orient.core.metadata.schema.OClass#getName()}.
    */
   String NAME = "E";

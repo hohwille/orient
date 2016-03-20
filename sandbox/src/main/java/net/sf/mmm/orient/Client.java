@@ -56,7 +56,6 @@ public class Client {
       OMetadataDefault metadata = db.getMetadata();
       OSchemaProxy schema = metadata.getSchema();
       OClass country = schema.getClass("Country");
-      Class<?> javaClass = country.getJavaClass();
       for (OProperty property : country.properties()) {
         System.out.println(
             property.getName() + ", type:" + property.getType() + ", linkedType: " + property.getLinkedType()

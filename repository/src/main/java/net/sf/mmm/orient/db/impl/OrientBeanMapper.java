@@ -24,12 +24,7 @@ public interface OrientBeanMapper {
    *
    * @param schema the {@link OSchemaProxy}.
    */
-  default void syncSchema(OSchemaProxy schema) {
-
-    for (OClass oclass : schema.getClasses()) {
-      syncClass(oclass);
-    }
-  }
+  void syncSchema(OSchemaProxy schema);
 
   /**
    * Synchronizes a {@link OClass OrientDB class} with the according {@link OrientBean}.

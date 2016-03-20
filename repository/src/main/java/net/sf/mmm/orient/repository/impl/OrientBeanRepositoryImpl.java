@@ -31,7 +31,8 @@ public class OrientBeanRepositoryImpl<E extends OrientBean> implements OrientBea
     super();
     this.entityClass = entityClass;
     this.beanFactory = beanFactory;
-    this.prototype = beanFactory.createPrototype(entityClass, true);
+    // TODO: retrieve from bean mapper
+    this.prototype = beanFactory.createPrototype(entityClass);
   }
 
   @Override

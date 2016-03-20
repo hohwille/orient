@@ -49,7 +49,7 @@ class OrientClass {
   public void setOClass(OClass oClass) {
 
     if (this.oClass != null) {
-      throw new IllegalStateException("OClass can be set only once: " + this.prototype.access().getName());
+      throw new IllegalStateException("OClass can be set only once: " + this.prototype.access().getSimpleName());
     }
     this.oClass = oClass;
   }
@@ -85,7 +85,7 @@ class OrientClass {
   public String toString() {
 
     BeanAccess access = this.prototype.access();
-    return access.getName() + "(" + access.getBeanClass().getName() + ")";
+    return access.getSimpleName() + "(" + access.getBeanClass().getName() + ")";
   }
 
 }
