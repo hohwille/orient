@@ -4,13 +4,13 @@ package net.sf.mmm.orient.data.bean.api.audio;
 
 import net.sf.mmm.orient.data.bean.api.media.AbstractTrack;
 import net.sf.mmm.orient.data.bean.api.world.Language;
-import net.sf.mmm.orient.property.api.LinkListProperty;
-import net.sf.mmm.orient.property.api.LinkProperty;
 import net.sf.mmm.util.property.api.lang.IntegerProperty;
 import net.sf.mmm.util.property.api.lang.StringProperty;
+import net.sf.mmm.util.property.api.link.LinkListProperty;
+import net.sf.mmm.util.property.api.link.LinkProperty;
 
 /**
- * This is the {@link net.sf.mmm.orient.bean.api.OrientBean} for an audio {@link AudioTrack track}. It represents the
+ * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for an audio {@link AudioTrack track}. It represents the
  * metadata of a single audio record such as a song, a chapter of an audio-book, etc. Any single audio file (ogg, mp3,
  * flac, etc.) or any single track on an audio CD corresponds to an {@link AudioTrack}.<br>
  * Typically an {@link AudioTrack} belongs to an {@link AudioAlbum} that groups the tracks belonging together (e.g. to

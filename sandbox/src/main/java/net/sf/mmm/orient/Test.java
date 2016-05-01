@@ -9,10 +9,10 @@ import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.OMetadataDefault;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
+import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
 import net.sf.mmm.orient.data.bean.api.AbstractCode;
 import net.sf.mmm.orient.data.bean.api.world.Country;
-import net.sf.mmm.orient.db.impl.OrientBeanMapper;
-import net.sf.mmm.orient.db.impl.OrientBeanMapperImpl;
+import net.sf.mmm.orient.impl.mapping.OrientBeanMapperImpl;
 
 /**
  * TODO: this class ...
@@ -33,10 +33,10 @@ public class Test {
     OMetadataDefault metadata = connection.getMetadata();
     beanMapper.syncSchema(metadata.getSchema());
     ODocument doc = connection.load(new ORecordId("#17:501"));
-    Country bean = beanMapper.map2Bean(doc);
+    Country bean = beanMapper.toBean(doc);
     System.out.println(bean);
     bean.Inhabitants().set(9876543210L);
-    doc = beanMapper.map2Document(bean);
+    doc = beanMapper.fromBean(bean);
     Object field = doc.field("Inhabitants");
     System.out.println(field);
     doc.save();

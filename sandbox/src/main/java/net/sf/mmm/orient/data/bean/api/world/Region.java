@@ -6,7 +6,7 @@ import net.sf.mmm.orient.data.bean.api.world.de.DeBundesland;
 import net.sf.mmm.orient.data.bean.api.world.fr.FrDepartement;
 import net.sf.mmm.orient.data.bean.api.world.ie.IeCounty;
 import net.sf.mmm.orient.data.bean.api.world.us.UsState;
-import net.sf.mmm.orient.property.api.LinkProperty;
+import net.sf.mmm.util.property.api.link.LinkProperty;
 import net.sf.mmm.util.validation.base.Mandatory;
 
 /**

@@ -2,7 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.media;
 
-import net.sf.mmm.orient.bean.api.Edge;
+import net.sf.mmm.orient.api.bean.Edge;
 
 /**
  * TODO: this class ...

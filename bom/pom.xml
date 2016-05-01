@@ -62,7 +62,12 @@
       <!-- Internal dependencies -->
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mmm-orient-bean</artifactId>
+        <artifactId>mmm-orient-api</artifactId>
+        <version>${net.sf.mmm.orient.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mmm-orient-main</artifactId>
         <version>${net.sf.mmm.orient.version}</version>
       </dependency>
       <dependency>

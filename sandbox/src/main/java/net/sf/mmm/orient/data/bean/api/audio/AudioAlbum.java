@@ -2,9 +2,9 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.audio;
 
-import javafx.beans.property.BooleanProperty;
 import net.sf.mmm.orient.data.bean.api.AbstractName;
-import net.sf.mmm.orient.property.api.LinkListProperty;
+import net.sf.mmm.util.property.api.lang.BooleanProperty;
+import net.sf.mmm.util.property.api.link.LinkListProperty;
 
 /**
  * TODO: this class ...

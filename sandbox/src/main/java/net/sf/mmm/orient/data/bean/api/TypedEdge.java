@@ -2,7 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api;
 
-import net.sf.mmm.orient.bean.api.Edge;
+import net.sf.mmm.orient.api.bean.Edge;
 import net.sf.mmm.orient.data.bean.api.contact.Person;
 import net.sf.mmm.util.property.api.lang.StringProperty;
 

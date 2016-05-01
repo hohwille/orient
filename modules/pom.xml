@@ -13,7 +13,8 @@
   <description>The modules of mmm-orient.</description>
 
   <modules>
-    <module>../bean</module>
+    <module>../api</module>
+    <module>../main</module>
     <module>../repository</module>
   </modules>
 

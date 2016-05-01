@@ -3,7 +3,7 @@
 package net.sf.mmm.orient.data.bean.api.world.de;
 
 import net.sf.mmm.orient.data.bean.api.world.City;
-import net.sf.mmm.orient.datatype.api.OrientLink;
+import net.sf.mmm.util.property.api.link.LinkProperty;
 
 /**
  * TODO: this class ...
@@ -13,6 +13,6 @@ import net.sf.mmm.orient.datatype.api.OrientLink;
  */
 public interface DeGemeinde extends City {
 
-  OrientLink<DeLandkreis> Landkreis();
+  LinkProperty<DeLandkreis> Landkreis();
 
 }

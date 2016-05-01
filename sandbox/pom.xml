@@ -17,7 +17,12 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-orient-repository</artifactId>
+      <artifactId>mmm-orient-main</artifactId>
+    </dependency>
+    <dependency>
+      <!-- Just for hacking -->
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-util-test</artifactId>
     </dependency>
   </dependencies>
 </project>

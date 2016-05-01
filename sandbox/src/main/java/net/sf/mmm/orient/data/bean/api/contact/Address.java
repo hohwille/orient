@@ -2,13 +2,13 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.contact;
 
-import net.sf.mmm.orient.bean.api.Vertex;
+import net.sf.mmm.orient.api.bean.Vertex;
 import net.sf.mmm.orient.data.bean.api.world.City;
 import net.sf.mmm.orient.data.bean.api.world.Country;
 import net.sf.mmm.orient.data.bean.api.world.PostalCode;
 import net.sf.mmm.orient.data.bean.api.world.Region;
-import net.sf.mmm.orient.property.api.LinkProperty;
 import net.sf.mmm.util.property.api.lang.StringProperty;
+import net.sf.mmm.util.property.api.link.LinkProperty;
 import net.sf.mmm.util.validation.base.Mandatory;
 
 /**

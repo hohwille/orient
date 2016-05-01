@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.sf.m-m-m</groupId>
+    <artifactId>mmm-orient-modules</artifactId>
+    <version>dev-SNAPSHOT</version>
+    <relativePath>../modules/pom.xml</relativePath>
+  </parent>
+  <artifactId>mmm-orient-main</artifactId>
+  <version>${net.sf.mmm.orient.version}</version>
+  <packaging>jar</packaging>
+  <name>${project.artifactId}</name>
+  <description>This project provides the main code to support OrientDB.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-orient-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mmm-util-query</artifactId>
+      <version>8.0.0-SNAPSHOT</version>
+      <!-- <version>${net.sf.mmm.util.version}</version> -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.orientechnologies</groupId>
+      <artifactId>orientdb-server</artifactId>
+    </dependency>
+  </dependencies>
+</project>

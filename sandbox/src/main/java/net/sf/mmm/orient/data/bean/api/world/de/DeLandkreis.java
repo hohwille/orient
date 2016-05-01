@@ -3,7 +3,7 @@
 package net.sf.mmm.orient.data.bean.api.world.de;
 
 import net.sf.mmm.orient.data.bean.api.world.AbstractArea;
-import net.sf.mmm.orient.datatype.api.OrientLink;
+import net.sf.mmm.util.property.api.link.LinkProperty;
 
 /**
  * TODO: this class ...
@@ -13,6 +13,6 @@ import net.sf.mmm.orient.datatype.api.OrientLink;
  */
 public interface DeLandkreis extends AbstractArea {
 
-  OrientLink<DeRegierungsbezirk> Regierungsbezirk();
+  LinkProperty<DeRegierungsbezirk> Regierungsbezirk();
 
 }
