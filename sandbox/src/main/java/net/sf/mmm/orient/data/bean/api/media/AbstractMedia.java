@@ -6,8 +6,8 @@ import net.sf.mmm.orient.data.bean.api.AbstractName;
 import net.sf.mmm.util.property.api.lang.StringListProperty;
 
 /**
- * This is the abstract interface for any multi-media object.
- *
+ * This is the abstract {@link net.sf.mmm.orient.api.bean.OrientBean} for any multi-media object.
+ * 
  * @author hohwille
  * @since 1.0.0
  */

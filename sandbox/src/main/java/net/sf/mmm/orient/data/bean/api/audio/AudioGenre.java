@@ -7,7 +7,8 @@ import net.sf.mmm.util.property.api.lang.IntegerProperty;
 import net.sf.mmm.util.property.api.link.LinkProperty;
 
 /**
- * TODO: this class ...
+ * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for the {@link AbstractGenre genre} of an
+ * {@link AudioTrack}.
  *
  * @author hohwille
  * @since 1.0.0

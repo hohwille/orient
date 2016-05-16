@@ -13,7 +13,7 @@ import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 
 import net.sf.mmm.orient.api.query.statement.OrientDbSelectStatement;
 import net.sf.mmm.util.bean.api.BeanFactory;
-import net.sf.mmm.util.bean.api.EntityBean;
+import net.sf.mmm.util.bean.api.entity.EntityBean;
 import net.sf.mmm.util.property.api.path.PropertyPath;
 import net.sf.mmm.util.query.api.path.EntityAlias;
 import net.sf.mmm.util.query.api.path.Path;

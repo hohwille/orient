@@ -17,7 +17,7 @@ import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
 import net.sf.mmm.orient.db.api.OrientDatabase;
 import net.sf.mmm.orient.repository.api.OrientBeanRepository;
 import net.sf.mmm.util.bean.api.BeanFactory;
-import net.sf.mmm.util.lang.api.Id;
+import net.sf.mmm.util.bean.api.id.Id;
 
 /**
  * This is the implementation of {@link OrientBeanRepository}.

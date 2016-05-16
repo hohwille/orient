@@ -6,7 +6,7 @@ import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.repository.api.OrientBeanRepository;
-import net.sf.mmm.util.lang.api.Id;
+import net.sf.mmm.util.bean.api.id.Id;
 
 /**
  * This is the interface for the low-level abstraction of the Orient-Database. Use {@link OrientBeanRepository} instead

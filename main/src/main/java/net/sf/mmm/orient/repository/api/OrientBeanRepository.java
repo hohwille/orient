@@ -6,7 +6,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
-import net.sf.mmm.util.lang.api.Id;
+import net.sf.mmm.util.bean.api.id.Id;
 
 /**
  * This is the interface for a spring-data {@link PagingAndSortingRepository} responsible for a {@link #getEntityClass()

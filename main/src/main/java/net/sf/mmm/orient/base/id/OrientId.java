@@ -6,8 +6,8 @@ import java.util.Objects;
 
 import com.orientechnologies.orient.core.id.ORID;
 
-import net.sf.mmm.util.lang.api.Id;
-import net.sf.mmm.util.lang.base.AbstractId;
+import net.sf.mmm.util.bean.api.id.AbstractId;
+import net.sf.mmm.util.bean.api.id.Id;
 
 /**
  * This is the implementation of {@link Id} for a native {@link ORID}.
@@ -23,20 +23,20 @@ public class OrientId<E> implements Id<E> {
 
   private final ORID orid;
 
-  private final Number revision;
+  private final long version;
 
   /**
    * The constructor.
    *
    * @param type - see {@link #getType()}.
    * @param orid - see {@link #getOrid()}.
-   * @param revision - see {@link #getRevision()}.
+   * @param version - see {@link #getVersion()}.
    */
-  protected OrientId(Class<E> type, ORID orid, Number revision) {
+  protected OrientId(Class<E> type, ORID orid, long version) {
     super();
     this.type = type;
     this.orid = orid;
-    this.revision = revision;
+    this.version = version;
   }
 
   @Override
@@ -52,9 +52,9 @@ public class OrientId<E> implements Id<E> {
   }
 
   @Override
-  public Number getRevision() {
+  public long getVersion() {
 
-    return this.revision;
+    return this.version;
   }
 
   /**
@@ -68,7 +68,7 @@ public class OrientId<E> implements Id<E> {
   @Override
   public final int hashCode() {
 
-    return Objects.hash(this.orid, this.revision);
+    return Objects.hash(this.orid);
   }
 
   @Override
@@ -87,7 +87,7 @@ public class OrientId<E> implements Id<E> {
     if (!Objects.equals(this.type, other.type)) {
       return false;
     }
-    if (!Objects.equals(this.revision, other.revision)) {
+    if (this.version != other.version) {
       return false;
     }
     return true;
@@ -96,7 +96,7 @@ public class OrientId<E> implements Id<E> {
   @Override
   public String toString() {
 
-    return this.orid.toString();
+    return this.orid.toString() + '@' + this.version;
   }
 
   /**
@@ -107,22 +107,27 @@ public class OrientId<E> implements Id<E> {
    */
   public static <E> OrientId<E> valueOf(Class<E> type, ORID orid) {
 
-    return valueOf(type, orid, null);
+    return valueOf(type, orid, VERSION_LATEST);
   }
 
   /**
    * @param <E> the generic type of the identified entity.
    * @param type - see {@link #getType()}.
    * @param orid - see {@link #getOrid()}.
-   * @param revision - see {@link #getRevision()}.
+   * @param version - see {@link #getVersion()}.
    * @return a new instance of {@link OrientId}.
    */
-  public static <E> OrientId<E> valueOf(Class<E> type, ORID orid, Number revision) {
+  public static <E> OrientId<E> valueOf(Class<E> type, ORID orid, int version) {
+
+    return valueOf(type, orid, (long) version);
+  }
+
+  private static <E> OrientId<E> valueOf(Class<E> type, ORID orid, long version) {
 
     if (orid == null) {
       return null;
     } else {
-      return new OrientId<>(type, orid, revision);
+      return new OrientId<>(type, orid, version);
     }
   }
 }

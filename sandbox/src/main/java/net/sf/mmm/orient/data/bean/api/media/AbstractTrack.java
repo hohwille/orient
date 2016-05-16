@@ -5,7 +5,7 @@ package net.sf.mmm.orient.data.bean.api.media;
 import net.sf.mmm.util.property.api.time.DurationInSecondsProperty;
 
 /**
- * This is the abstract {@link net.sf.mmm.orient.bean.api.OrientBean} for a multi-media track such as an
+ * This is the abstract {@link net.sf.mmm.orient.api.bean.OrientBean} for a multi-media track such as an
  * {@link net.sf.mmm.orient.data.bean.api.audio.AudioTrack} or a
  * {@link net.sf.mmm.orient.data.bean.api.video.VideoTrack}.
  *

@@ -7,7 +7,7 @@ import net.sf.mmm.util.property.api.lang.StringProperty;
 import net.sf.mmm.util.property.api.time.LocalDateProperty;
 
 /**
- * TODO: this class ...
+ * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for a person.
  *
  * @author hohwille
  * @since 1.0.0
@@ -39,8 +39,14 @@ public interface Person extends Vertex {
    */
   StringProperty NameSuffix();
 
+  /**
+   * @return the gender of the person.
+   */
   StringProperty Gender();
 
+  /**
+   * @return the date when the person was born.
+   */
   LocalDateProperty Birthday();
 
 }

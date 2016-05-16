@@ -18,6 +18,7 @@ import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OSchemaProxy;
+import com.orientechnologies.orient.core.record.ORecordInternal;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.api.bean.Edge;
@@ -29,12 +30,12 @@ import net.sf.mmm.orient.impl.property.PropertyBuilder;
 import net.sf.mmm.orient.impl.property.PropertyBuilderImpl;
 import net.sf.mmm.util.bean.api.Bean;
 import net.sf.mmm.util.bean.api.BeanAccess;
-import net.sf.mmm.util.bean.api.Entity;
+import net.sf.mmm.util.bean.api.entity.Entity;
+import net.sf.mmm.util.bean.api.id.Id;
 import net.sf.mmm.util.bean.api.link.Link;
 import net.sf.mmm.util.bean.base.link.IdLink;
 import net.sf.mmm.util.bean.base.mapping.AbstractDocumentBeanMapper;
 import net.sf.mmm.util.exception.api.ObjectMismatchException;
-import net.sf.mmm.util.lang.api.Id;
 import net.sf.mmm.util.property.api.ReadableProperty;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.ReflectionUtil;
@@ -48,9 +49,8 @@ import net.sf.mmm.util.reflect.impl.SimpleGenericTypeImpl;
  * @since 1.0.0
  */
 @Named
-public class OrientBeanMapperImpl
-    extends AbstractDocumentBeanMapper<ODocument, OrientBean, OrientBeanMapperImpl.OrientClass>
-    implements OrientBeanMapper {
+public class OrientBeanMapperImpl extends
+    AbstractDocumentBeanMapper<ODocument, OrientBean, OrientBeanMapperImpl.OrientClass> implements OrientBeanMapper {
 
   private static final String PACKAGE_PREFIX = "net.sf.mmm.orient.";
 
@@ -101,8 +101,7 @@ public class OrientBeanMapperImpl
       for (String packageName : this.packagesToScan) {
         this.reflectionUtil.findClassNames(packageName, true, classNames);
       }
-      Set<Class<?>> classes = this.reflectionUtil.loadClasses(classNames,
-          (c) -> OrientBean.class.isAssignableFrom(c));
+      Set<Class<?>> classes = this.reflectionUtil.loadClasses(classNames, (c) -> OrientBean.class.isAssignableFrom(c));
       for (Class orientClass : classes) {
         register(orientClass);
       }
@@ -145,7 +144,8 @@ public class OrientBeanMapperImpl
   }
 
   /**
-   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}es.
+   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}
+   *        es.
    */
   public void setPackagesToScan(List<String> packages) {
 
@@ -153,7 +153,8 @@ public class OrientBeanMapperImpl
   }
 
   /**
-   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}es.
+   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}
+   *        es.
    */
   public void addPackagesToScan(List<String> packages) {
 
@@ -261,18 +262,28 @@ public class OrientBeanMapperImpl
         }
       }
     }
-    // for each property in OrinetBean prototype create corresponding property in according OrientDB class
-    for (String propertyName : propertyNames) {
-      WritableProperty<?> property = access.getProperty(propertyName);
-      this.propertyBuilder.build(property, oClass);
+    if (!access.getBeanClass().getPackage().equals(Vertex.class.getPackage())) {
+      // for each property in OrinetBean prototype create corresponding property in according OrientDB class
+      for (String propertyName : propertyNames) {
+        WritableProperty<?> property = access.getProperty(propertyName);
+        this.propertyBuilder.build(property, oClass);
+      }
     }
   }
 
   private boolean isAcceptedProperty(OProperty oProperty) {
 
     String name = oProperty.getName();
-    return !name.startsWith("_") && !name.equals(Entity.PROPERTY_NAME_ID)
-        && !name.equals(Entity.PROPERTY_NAME_VERSION);
+    if (name.startsWith("_")) {
+      return false;
+    }
+    if (name.equals(OrientBean.PROPERTY_ALIAS_ID) || name.equals(OrientBean.PROPERTY_ALIAS_VERSION)
+        || name.equals(Entity.PROPERTY_NAME_ID)) {
+      getLogger().debug("Ignoring sync of property {}.{} because the name is reserved.",
+          oProperty.getOwnerClass().getName(), name);
+      return false;
+    }
+    return true;
   }
 
   private boolean isAbstract(OrientBean prototype) {
@@ -383,7 +394,7 @@ public class OrientBeanMapperImpl
       if (property != null) {
         if (Link.class.isAssignableFrom(property.getType().getRetrievalClass()) && (value != null)) {
           final ODocument oDocument = (ODocument) value;
-          Id id = OrientId.valueOf(access.getBeanClass(), oDocument.getIdentity());
+          Id id = OrientId.valueOf(access.getBeanClass(), oDocument.getIdentity(), document.getVersion());
           IdLink<?> link = IdLink.valueOf(id, x -> toBean(oDocument));
           property.setValue(link);
         } else {
@@ -393,10 +404,9 @@ public class OrientBeanMapperImpl
     }
     ORID identity = document.getIdentity();
     if (identity != null) {
-      Id<?> id = OrientId.valueOf(access.getBeanClass(), identity);
+      Id<?> id = OrientId.valueOf(access.getBeanClass(), identity, document.getVersion());
       bean.setId(id);
     }
-    bean.setVersion(document.getVersion());
   }
 
   @Override
@@ -541,11 +551,14 @@ public class OrientBeanMapperImpl
 
       Id<? extends OrientBean> id = (Id<? extends OrientBean>) bean.getId();
       String className = bean.access().getSimpleName();
+      ODocument document;
       if (id != null) {
-        return new ODocument(className, convertId(id));
+        document = new ODocument(className, convertId(id));
+        ORecordInternal.setVersion(document.getRecord(), (int) id.getVersion());
       } else {
-        return new ODocument(className);
+        document = new ODocument(className);
       }
+      return document;
     }
   }
 
