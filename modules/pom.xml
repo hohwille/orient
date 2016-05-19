@@ -15,7 +15,7 @@
   <modules>
     <module>../api</module>
     <module>../main</module>
-    <module>../repository</module>
+    <!--<module>../repository</module>-->
   </modules>
 
   <profiles>

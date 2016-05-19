@@ -3,8 +3,10 @@
 package net.sf.mmm.orient.data.bean.api.audio;
 
 import net.sf.mmm.orient.data.bean.api.AbstractName;
+import net.sf.mmm.orient.data.bean.api.media.AbstractArtist;
 import net.sf.mmm.util.property.api.lang.BooleanProperty;
 import net.sf.mmm.util.property.api.link.LinkListProperty;
+import net.sf.mmm.util.property.api.link.LinkProperty;
 
 /**
  * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for an album such as a compact disc (CD) or a
@@ -31,5 +33,11 @@ public interface AudioAlbum extends AbstractName {
    *         media).
    */
   LinkListProperty<AudioTrack> Tracks();
+
+  /**
+   * @return the {@link AbstractArtist artist} of this {@link AudioAlbum}. If it is a {@link #Sampler()
+   *         sampler}, a generic {@link AbstractArtist artist} (Various Artists) is used.
+   */
+  LinkProperty<AbstractArtist> Artist();
 
 }

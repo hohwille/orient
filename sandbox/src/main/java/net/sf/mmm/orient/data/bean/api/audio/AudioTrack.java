@@ -2,6 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.audio;
 
+import net.sf.mmm.orient.data.bean.api.media.AbstractArtist;
 import net.sf.mmm.orient.data.bean.api.media.AbstractTrack;
 import net.sf.mmm.orient.data.bean.api.world.Language;
 import net.sf.mmm.util.property.api.lang.IntegerProperty;
@@ -34,6 +35,11 @@ public interface AudioTrack extends AbstractTrack {
   LinkProperty<AudioGenre> Genre();
 
   /**
+   * @return the optional {@link AudioTrack} covered by this {@link AudioTrack}.
+   */
+  LinkProperty<AudioTrack> CoverOf();
+
+  /**
    * @return the musical key of the track. Value will be empty if no music, not in a main key, or unknown.
    */
   StringProperty MusicalKey();
@@ -50,5 +56,16 @@ public interface AudioTrack extends AbstractTrack {
    *         in addition to the {@link #PrimaryLanguage() primary language} should be listed here.
    */
   LinkListProperty<Language> AdditionalLanguages();
+
+  /**
+   * @return the {@link AbstractArtist artist} of this track.
+   */
+  LinkProperty<AbstractArtist> Artist();
+
+  /**
+   * @return the optional {@link AbstractArtist artist} who composed this track. Should only be set if
+   *         different from {@link #Artist()}.
+   */
+  LinkProperty<AbstractArtist> Composer();
 
 }
