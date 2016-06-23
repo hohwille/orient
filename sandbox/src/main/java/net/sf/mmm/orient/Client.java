@@ -57,8 +57,8 @@ public class Client {
       OSchemaProxy schema = metadata.getSchema();
       OClass country = schema.getClass("Country");
       for (OProperty property : country.properties()) {
-        System.out.println(
-            property.getName() + ", type:" + property.getType() + ", linkedType: " + property.getLinkedType()
+        System.out
+            .println(property.getName() + ", type:" + property.getType() + ", linkedType: " + property.getLinkedType()
                 + ", linkedClass:" + property.getLinkedClass() + ", regexp:" + property.getRegexp() + ", min:"
                 + property.getMin() + ", max:" + property.getMax() + ", defaultValue:" + property.getDefaultValue()
                 + ", fullName:" + property.getFullName() + ", collate:" + property.getCollate());
@@ -67,17 +67,19 @@ public class Client {
       ODocument doc = db.load(new ORecordId("#17:501"));
       System.out.println(Arrays.toString(doc.fieldNames()));
       ORidBag out = doc.field("out_");
-      System.out.println(out);
-      for (OIdentifiable id : out) {
-        System.out.println(id);
+      if (out != null) {
+        System.out.println(out);
+        for (OIdentifiable id : out) {
+          System.out.println(id);
+        }
+        System.out.println(out.getClass());
+        ORidBag outTE = doc.field("out_TypedEdge");
+        System.out.println(outTE);
+        for (OIdentifiable id : outTE) {
+          System.out.println(id.getIdentity());
+        }
+        System.out.println(outTE.getClass());
       }
-      System.out.println(out.getClass());
-      ORidBag outTE = doc.field("out_TypedEdge");
-      System.out.println(outTE);
-      for (OIdentifiable id : outTE) {
-        System.out.println(id.getIdentity());
-      }
-      System.out.println(outTE.getClass());
     } finally {
       db.close();
       factory.close();

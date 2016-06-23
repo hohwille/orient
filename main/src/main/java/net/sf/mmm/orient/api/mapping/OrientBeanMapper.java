@@ -43,6 +43,12 @@ public interface OrientBeanMapper extends DocumentBeanMapper<ODocument, OrientBe
   OrientBean getBeanPrototype(OClass oClass);
 
   /**
+   * @param clusterId the {@link ORID#getClusterId() cluster ID}.
+   * @return the corresponding {@link OrientBean} {@link BeanFactory#createPrototype(Class) prototype}.
+   */
+  OrientBean getBeanPrototype(int clusterId);
+
+  /**
    * @param <B> the generic type of the {@link OrientBean}.
    * @param type the {@link Class} reflecting the {@link OrientBean}-interface to get the prototype for.
    * @return the corresponding {@link OrientBean} {@link BeanFactory#createPrototype(Class) prototype}.

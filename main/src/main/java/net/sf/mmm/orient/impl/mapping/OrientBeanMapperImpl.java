@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -56,6 +58,8 @@ public class OrientBeanMapperImpl extends
 
   private static final Bean[] NO_BEANS = new Bean[0];
 
+  private final Map<Integer, OrientClass> clusterId2OrientClassMap;
+
   private PropertyBuilder propertyBuilder;
 
   private ReflectionUtil reflectionUtil;
@@ -70,6 +74,7 @@ public class OrientBeanMapperImpl extends
    */
   public OrientBeanMapperImpl() {
     super();
+    this.clusterId2OrientClassMap = new ConcurrentHashMap<>();
   }
 
   /**
@@ -144,8 +149,7 @@ public class OrientBeanMapperImpl extends
   }
 
   /**
-   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}
-   *        es.
+   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class} es.
    */
   public void setPackagesToScan(List<String> packages) {
 
@@ -153,8 +157,7 @@ public class OrientBeanMapperImpl extends
   }
 
   /**
-   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class}
-   *        es.
+   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class} es.
    */
   public void addPackagesToScan(List<String> packages) {
 
@@ -190,6 +193,18 @@ public class OrientBeanMapperImpl extends
     OrientClass orientClass = new OrientClass(prototype);
     addMapping(orientClass);
     return orientClass;
+  }
+
+  @Override
+  public OrientBean getBeanPrototype(int clusterId) {
+
+    Integer key = Integer.valueOf(clusterId);
+    OrientClass orientClass = this.clusterId2OrientClassMap.get(key);
+    if (orientClass == null) {
+      return null;
+      // throw new ObjectNotFoundException(OrientClass.class, key);
+    }
+    return orientClass.prototype;
   }
 
   @Override
@@ -245,6 +260,9 @@ public class OrientBeanMapperImpl extends
       orientClass.setOClass(oClass);
     } else if (!currentOClass.equals(oClass)) {
       throw new IllegalStateException("OClass changed for " + orientClass);
+    }
+    for (int clusterId : oClass.getClusterIds()) {
+      this.clusterId2OrientClassMap.put(Integer.valueOf(clusterId), orientClass);
     }
     BeanAccess access = orientClass.prototype.access();
     Set<String> propertyNames;
@@ -394,7 +412,7 @@ public class OrientBeanMapperImpl extends
       if (property != null) {
         if (Link.class.isAssignableFrom(property.getType().getRetrievalClass()) && (value != null)) {
           final ODocument oDocument = (ODocument) value;
-          Id id = OrientId.valueOf(access.getBeanClass(), oDocument.getIdentity(), document.getVersion());
+          Id id = OrientId.of(access.getBeanClass(), oDocument.getIdentity(), document.getVersion());
           IdLink<?> link = IdLink.valueOf(id, x -> toBean(oDocument));
           property.setValue(link);
         } else {
@@ -404,7 +422,7 @@ public class OrientBeanMapperImpl extends
     }
     ORID identity = document.getIdentity();
     if (identity != null) {
-      Id<?> id = OrientId.valueOf(access.getBeanClass(), identity, document.getVersion());
+      Id<?> id = OrientId.of(access.getBeanClass(), identity, document.getVersion());
       bean.setId(id);
     }
   }
