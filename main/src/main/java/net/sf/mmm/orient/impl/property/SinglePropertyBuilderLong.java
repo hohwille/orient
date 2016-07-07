@@ -8,8 +8,8 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.util.property.api.WritableProperty;
-import net.sf.mmm.util.property.api.lang.LongProperty;
-import net.sf.mmm.util.property.api.lang.ReadableLongProperty;
+import net.sf.mmm.util.property.api.math.LongProperty;
+import net.sf.mmm.util.property.api.math.ReadableLongProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**

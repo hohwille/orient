@@ -3,7 +3,7 @@
 package net.sf.mmm.orient.data.bean.api;
 
 import net.sf.mmm.orient.api.bean.Vertex;
-import net.sf.mmm.util.property.api.lang.DoubleProperty;
+import net.sf.mmm.util.property.api.math.DoubleProperty;
 
 /**
  * This is the abstract base class for a {@link Vertex} that has an optional geo-location with {@link #Longitude()} and

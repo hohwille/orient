@@ -3,8 +3,8 @@
 package net.sf.mmm.orient.data.bean.api.audio;
 
 import net.sf.mmm.orient.data.bean.api.AbstractGenre;
-import net.sf.mmm.util.property.api.lang.IntegerProperty;
 import net.sf.mmm.util.property.api.link.LinkProperty;
+import net.sf.mmm.util.property.api.math.IntegerProperty;
 
 /**
  * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for the {@link AbstractGenre genre} of an

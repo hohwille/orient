@@ -5,7 +5,7 @@ package net.sf.mmm.orient.data.bean.api.world;
 import net.sf.mmm.orient.data.bean.api.AbstractCode;
 import net.sf.mmm.orient.data.bean.api.AbstractLocalizedName;
 import net.sf.mmm.orient.data.bean.api.AbstractLocation;
-import net.sf.mmm.util.property.api.lang.LongProperty;
+import net.sf.mmm.util.property.api.math.LongProperty;
 
 /**
  * This is the abstract base class for an area like a country, state, city, etc.

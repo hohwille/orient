@@ -5,10 +5,10 @@ package net.sf.mmm.orient.data.bean.api.audio;
 import net.sf.mmm.orient.data.bean.api.media.AbstractArtist;
 import net.sf.mmm.orient.data.bean.api.media.AbstractTrack;
 import net.sf.mmm.orient.data.bean.api.world.Language;
-import net.sf.mmm.util.property.api.lang.IntegerProperty;
 import net.sf.mmm.util.property.api.lang.StringProperty;
 import net.sf.mmm.util.property.api.link.LinkListProperty;
 import net.sf.mmm.util.property.api.link.LinkProperty;
+import net.sf.mmm.util.property.api.math.IntegerProperty;
 
 /**
  * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for an audio {@link AudioTrack track}. It
