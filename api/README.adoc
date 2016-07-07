@@ -1,0 +1,12 @@
+= Mature Modular Meta-framework (mmm)
+
+image:https://raw.github.com/m-m-m/mmm/master/src/site/resources/images/logo.png[logo]
+
+*Welcome to the wonderful world of http://m-m-m.sourceforge.net/index.html[mmm]!*
+
+== mmm-orient-api
+
+This module is part of link:../../..#mmm-orient[mmm-orient] and brings the minimal API your data-model will depend on for persisting with http://orientdb.com/orientdb/[OrientDB].
+
+* https://m-m-m.github.io/maven/apidocs/net/sf/mmm/orient/api/bean/api/package-summary.html#package.description[OrientBean API] based on https://m-m-m.github.io/maven/apidocs/net/sf/mmm/util/bean/api/package-summary.html#package.description[Bean API] from `mmm-util-property`.
+

@@ -1,0 +1,14 @@
+= Mature Modular Meta-framework (mmm)
+
+image:https://raw.github.com/m-m-m/mmm/master/src/site/resources/images/logo.png[logo]
+
+*Welcome to the wonderful world of http://m-m-m.sourceforge.net/index.html[mmm]!*
+
+== mmm-orient-api
+
+This module is part of link:../../..#mmm-orient[mmm-orient] and provides the main integration with http://orientdb.com/orientdb/[OrientDB].
+
+* http://m-m-m.github.io/maven/apidocs/net/sf/mmm/orient/api/db/OrientDatabase.html[OrientDatabase] as low-level shim to the orient database with spring-integration.
+* http://m-m-m.github.io/maven/apidocs/net/sf/mmm/orient/api/mapping/OrientBeanMapper.html[OrientBeanMapper] for mapping from ODocument to https://m-m-m.github.io/maven/apidocs/net/sf/mmm/orient/api/bean/api/OrientBean.html[OrientBean].
+* http://m-m-m.github.io/maven/apidocs/net/sf/mmm/orient/api/query/statement/OrientDbStatementFactory.html[OrientDbStatementFactory] allows to build queries for OrientDB SQL with type-safe and fluent API based on `mmm-util-query`.
+* https://m-m-m.github.io/maven/apidocs/[and much more... ]

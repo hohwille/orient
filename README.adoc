@@ -1,0 +1,15 @@
+= Mature Modular Meta-framework (mmm)
+
+image:https://raw.github.com/m-m-m/mmm/master/src/site/resources/images/logo.png[logo]
+
+*Welcome to the wonderful world of http://m-m-m.sourceforge.net/index.html[mmm]*
+
+== mmm-orient
+
+image:https://travis-ci.org/m-m-m/orient.svg?branch=master["build-status",link="https://travis-ci.org/m-m-m/orient"]
+
+The `mmm-orient` project is part of is part of link:../../../mmm#mmm[mmm] and integrates mmm with http://orientdb.com/orientdb/[OrientDB].
+
+* link:../../tree/master/api[mmm-orient-api] brings the minimal API your data-model will depend on.
+* link:../../tree/master/main[mmm-orient-main] brings the main integration and implementations.
+
