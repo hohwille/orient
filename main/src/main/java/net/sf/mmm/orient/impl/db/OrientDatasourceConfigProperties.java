@@ -1,17 +1,17 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package net.sf.mmm.orient.db.impl;
+package net.sf.mmm.orient.impl.db;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * TODO: this class ...
+ * The {@link ConfigurationProperties} for {@link OrientDatabaseImpl} (datasource for OrientDB).
  *
  * @author hohwille
  * @since 1.0.0
  */
 @ConfigurationProperties(prefix = "orient.datasource")
-public class OrientConfigProperties {
+public class OrientDatasourceConfigProperties {
 
   private String url;
 
@@ -24,7 +24,7 @@ public class OrientConfigProperties {
   /**
    * The constructor.
    */
-  public OrientConfigProperties() {
+  public OrientDatasourceConfigProperties() {
     super();
   }
 
@@ -37,7 +37,7 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @param url is the url to set
+   * @param url the new value of {@link #getUrl()}.
    */
   public void setUrl(String url) {
 
@@ -45,7 +45,7 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @return the username
+   * @return the username to log into OrientDB.
    */
   public String getUsername() {
 
@@ -53,7 +53,7 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @param username is the username to set
+   * @param username the new value of {@link #getUsername()}.
    */
   public void setUsername(String username) {
 
@@ -61,7 +61,7 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @return the password
+   * @return the password to log into OrientDB.
    */
   public String getPassword() {
 
@@ -69,7 +69,7 @@ public class OrientConfigProperties {
   }
 
   /**
-   * @param password is the password to set
+   * @param password the new value of {@link #getPassword()}.
    */
   public void setPassword(String password) {
 

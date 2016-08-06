@@ -3,7 +3,6 @@
 package net.sf.mmm.orient.impl.mapping;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -66,7 +65,7 @@ public class OrientBeanMapperImpl extends
 
   private OrientBean documentPrototype;
 
-  private List<String> packagesToScan;
+  private OrientMappingConfigProperties config;
 
   /**
    * The constructor.
@@ -78,13 +77,31 @@ public class OrientBeanMapperImpl extends
   }
 
   /**
-   * @param propertyBuilder is the {@link PropertyBuilder} to {@link Inject}.
+   * @param propertyBuilder the {@link PropertyBuilder} to {@link Inject}.
    */
   @Inject
   public void setPropertyBuilder(PropertyBuilder propertyBuilder) {
 
     getInitializationState().requireNotInitilized();
     this.propertyBuilder = propertyBuilder;
+  }
+
+  /**
+   * @param reflectionUtil the {@link ReflectionUtil} to {@link Inject}.
+   */
+  @Inject
+  public void setReflectionUtil(ReflectionUtil reflectionUtil) {
+
+    this.reflectionUtil = reflectionUtil;
+  }
+
+  /**
+   * @param config the {@link OrientMappingConfigProperties} to {@link Inject}.
+   */
+  @Inject
+  public void setConfig(OrientMappingConfigProperties config) {
+
+    this.config = config;
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -101,9 +118,9 @@ public class OrientBeanMapperImpl extends
     if (this.reflectionUtil == null) {
       this.reflectionUtil = ReflectionUtilImpl.getInstance();
     }
-    if (this.packagesToScan != null) {
+    if (this.config != null) {
       Set<String> classNames = new HashSet<>();
-      for (String packageName : this.packagesToScan) {
+      for (String packageName : this.config.getPackagesToScan()) {
         this.reflectionUtil.findClassNames(packageName, true, classNames);
       }
       Set<Class<?>> classes = this.reflectionUtil.loadClasses(classNames, (c) -> OrientBean.class.isAssignableFrom(c));
@@ -146,33 +163,6 @@ public class OrientBeanMapperImpl extends
 
     registerBean(Vertex.class);
     registerBean(Edge.class);
-  }
-
-  /**
-   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class} es.
-   */
-  public void setPackagesToScan(List<String> packages) {
-
-    this.packagesToScan = packages;
-  }
-
-  /**
-   * @param packages the {@link List} of {@link Package packages} to scan for {@link OrientBean}-{@link Class} es.
-   */
-  public void addPackagesToScan(List<String> packages) {
-
-    if (this.packagesToScan == null) {
-      this.packagesToScan = new ArrayList<>();
-    }
-    this.packagesToScan.addAll(packages);
-  }
-
-  /**
-   * @param packages the array of {@link Package packages} to scan for {@link OrientBean}-{@link Class}es.
-   */
-  public void addPackagesToScan(String... packages) {
-
-    addPackagesToScan(Arrays.asList(packages));
   }
 
   /**
@@ -223,6 +213,7 @@ public class OrientBeanMapperImpl extends
         syncClass(oclass);
       }
     }
+    schema.reload();
     getLogger().debug("Synchronizing OrientDB schema completed...");
   }
 
@@ -247,6 +238,7 @@ public class OrientBeanMapperImpl extends
       if (isAbstract(orientClass.prototype)) {
         oClass.setAbstract(true);
       }
+      schema.reload();
     }
     return oClass;
   }

@@ -13,8 +13,8 @@ import com.orientechnologies.orient.core.iterator.ORecordIteratorClass;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
+import net.sf.mmm.orient.api.db.OrientDatabase;
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
-import net.sf.mmm.orient.db.api.OrientDatabase;
 import net.sf.mmm.orient.repository.api.OrientBeanRepository;
 import net.sf.mmm.util.bean.api.BeanFactory;
 import net.sf.mmm.util.bean.api.id.Id;

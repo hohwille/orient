@@ -1,6 +1,6 @@
 /* Copyright (c) The m-m-m Team, Licensed under the Apache License, Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0 */
-package net.sf.mmm.orient.db.impl;
+package net.sf.mmm.orient.impl.db;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,8 +14,8 @@ import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
+import net.sf.mmm.orient.api.db.OrientDatabase;
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
-import net.sf.mmm.orient.db.api.OrientDatabase;
 import net.sf.mmm.util.bean.api.id.Id;
 import net.sf.mmm.util.component.api.ResourceMissingException;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
@@ -31,7 +31,7 @@ import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 @Named
 public class OrientDatabaseImpl extends AbstractLoggableComponent implements OrientDatabase {
 
-  private OrientConfigProperties config;
+  private OrientDatasourceConfigProperties config;
 
   private OPartitionedDatabasePoolFactory poolFactory;
 
@@ -50,10 +50,10 @@ public class OrientDatabaseImpl extends AbstractLoggableComponent implements Ori
   }
 
   /**
-   * @param config is the {@link OrientConfigProperties} to {@link Inject}.
+   * @param config is the {@link OrientDatasourceConfigProperties} to {@link Inject}.
    */
   @Inject
-  public void setConfig(OrientConfigProperties config) {
+  public void setConfig(OrientDatasourceConfigProperties config) {
 
     getInitializationState().requireNotInitilized();
     this.config = config;
@@ -84,7 +84,7 @@ public class OrientDatabaseImpl extends AbstractLoggableComponent implements Ori
       this.poolFactory = new OPartitionedDatabasePoolFactory();
     }
     if (this.config == null) {
-      throw new ResourceMissingException(OrientConfigProperties.class.getSimpleName());
+      throw new ResourceMissingException(OrientDatasourceConfigProperties.class.getSimpleName());
     }
     // new ODatabaseDocumentTx(this.config.getUrl());
     this.poolFactory.setMaxPoolSize(this.config.getMaxPoolSize());

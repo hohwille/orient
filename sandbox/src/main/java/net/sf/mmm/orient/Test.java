@@ -13,6 +13,7 @@ import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
 import net.sf.mmm.orient.data.bean.api.AbstractCode;
 import net.sf.mmm.orient.data.bean.api.world.Country;
 import net.sf.mmm.orient.impl.mapping.OrientBeanMapperImpl;
+import net.sf.mmm.orient.impl.mapping.OrientMappingConfigProperties;
 
 /**
  * TODO: this class ...
@@ -46,7 +47,9 @@ public class Test {
   private static OrientBeanMapper createBeanMapper() {
 
     OrientBeanMapperImpl beanMapperImpl = new OrientBeanMapperImpl();
-    beanMapperImpl.addPackagesToScan(AbstractCode.class.getPackage().getName());
+    OrientMappingConfigProperties config = new OrientMappingConfigProperties();
+    config.addPackagesToScan(AbstractCode.class.getPackage().getName());
+    beanMapperImpl.setConfig(config);
     beanMapperImpl.initialize();
     return beanMapperImpl;
   }
