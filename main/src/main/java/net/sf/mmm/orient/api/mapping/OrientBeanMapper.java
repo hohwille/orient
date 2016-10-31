@@ -9,8 +9,8 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
 import net.sf.mmm.util.bean.api.BeanFactory;
-import net.sf.mmm.util.bean.api.id.Id;
 import net.sf.mmm.util.bean.api.mapping.DocumentBeanMapper;
+import net.sf.mmm.util.data.api.id.Id;
 
 /**
  * This is the interface for mapping between {@link ODocument} and {@link OrientBean} and vice versa.

@@ -9,7 +9,7 @@ import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
-import net.sf.mmm.util.bean.api.link.Link;
+import net.sf.mmm.util.data.api.link.Link;
 import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.property.api.link.LinkProperty;
 import net.sf.mmm.util.reflect.api.GenericType;

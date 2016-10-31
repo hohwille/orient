@@ -17,9 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-util-property</artifactId>
-      <!-- <version>${net.sf.mmm.util.version}</version> -->
-      <version>8.0.0-SNAPSHOT</version>
+      <artifactId>mmm-util-bean</artifactId>
     </dependency>
     <dependency>
       <!-- only for javadoc here so a pure JSON client does not require to depend on OrientDB -->

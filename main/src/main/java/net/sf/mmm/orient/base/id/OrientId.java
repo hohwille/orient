@@ -7,8 +7,8 @@ import java.util.UUID;
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.id.ORecordId;
 
-import net.sf.mmm.util.bean.api.id.AbstractId;
-import net.sf.mmm.util.bean.api.id.Id;
+import net.sf.mmm.util.data.api.id.AbstractId;
+import net.sf.mmm.util.data.api.id.Id;
 import net.sf.mmm.util.exception.api.ObjectMismatchException;
 
 /**

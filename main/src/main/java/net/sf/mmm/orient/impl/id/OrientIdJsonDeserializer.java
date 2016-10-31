@@ -15,7 +15,7 @@ import net.sf.mmm.orient.api.bean.OrientBean;
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
 import net.sf.mmm.orient.base.id.OrientId;
 import net.sf.mmm.util.bean.api.Bean;
-import net.sf.mmm.util.bean.api.id.Id;
+import net.sf.mmm.util.data.api.id.Id;
 
 /**
  * An implementation of {@link JsonDeserializer} for {@link Id}.

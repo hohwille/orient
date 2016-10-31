@@ -16,9 +16,9 @@ import com.orientechnologies.orient.core.record.impl.ODocument;
 import net.sf.mmm.orient.api.bean.OrientBean;
 import net.sf.mmm.orient.api.db.OrientDatabase;
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
-import net.sf.mmm.util.bean.api.id.Id;
 import net.sf.mmm.util.component.api.ResourceMissingException;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
+import net.sf.mmm.util.data.api.id.Id;
 
 /**
  * Implementation to wrap OrientDB for spring.

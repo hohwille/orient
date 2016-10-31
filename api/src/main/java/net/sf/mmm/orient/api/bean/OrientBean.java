@@ -5,7 +5,7 @@ package net.sf.mmm.orient.api.bean;
 import net.sf.mmm.util.bean.api.Bean;
 import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.api.entity.EntityBean;
-import net.sf.mmm.util.bean.api.id.Id;
+import net.sf.mmm.util.data.api.id.Id;
 import net.sf.mmm.util.property.api.WritableProperty;
 
 /**
