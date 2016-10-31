@@ -50,8 +50,7 @@ import net.sf.mmm.util.reflect.impl.SimpleGenericTypeImpl;
  * @since 1.0.0
  */
 @Named
-public class OrientBeanMapperImpl extends
-    AbstractDocumentBeanMapper<ODocument, OrientBean, OrientBeanMapperImpl.OrientClass> implements OrientBeanMapper {
+public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, OrientBean, OrientBeanMapperImpl.OrientClass> implements OrientBeanMapper {
 
   private static final String PACKAGE_PREFIX = "net.sf.mmm.orient.";
 
@@ -142,14 +141,13 @@ public class OrientBeanMapperImpl extends
       return;
     }
     getLogger().debug("Initializing mapping for {}", orientClass);
-    BeanAccess access = orientClass.prototype.access();
+    BeanAccess access = orientClass.getPrototype().access();
     Class<?> beanClass = access.getBeanClass();
     Class<?>[] superInterfaces = beanClass.getInterfaces();
     List<OrientClass> superClasses = orientClass.getSuperClasses();
     for (Class<?> superBeanClass : superInterfaces) {
       if (OrientBean.class.isAssignableFrom(superBeanClass) && (OrientBean.class != superBeanClass)) {
-        OrientBean prototype = getBeanPrototypeBuilder()
-            .getOrCreatePrototype((Class<? extends OrientBean>) superBeanClass);
+        OrientBean prototype = getBeanPrototypeBuilder().getOrCreatePrototype((Class<? extends OrientBean>) superBeanClass);
         OrientClass superOrientClass = getOrCreateMapping(prototype);
         superClasses.add(superOrientClass);
       }
@@ -194,7 +192,7 @@ public class OrientBeanMapperImpl extends
       return null;
       // throw new ObjectNotFoundException(OrientClass.class, key);
     }
-    return orientClass.prototype;
+    return orientClass.getPrototype();
   }
 
   @Override
@@ -220,7 +218,7 @@ public class OrientBeanMapperImpl extends
   private OClass syncClass(OrientClass orientClass, OSchemaProxy schema) {
 
     // only create OClass if not exists, OProperty created afterwards in syncClass(OClass)
-    BeanAccess access = orientClass.prototype.access();
+    BeanAccess access = orientClass.getPrototype().access();
     String name = access.getSimpleName();
     OClass oClass = schema.getClass(name);
     if (oClass == null) {
@@ -235,7 +233,7 @@ public class OrientBeanMapperImpl extends
         oClasses[i++] = syncClass(superClass, schema);
       }
       oClass = schema.createClass(name, oClasses);
-      if (isAbstract(orientClass.prototype)) {
+      if (isAbstract(orientClass.getPrototype())) {
         oClass.setAbstract(true);
       }
       schema.reload();
@@ -256,7 +254,7 @@ public class OrientBeanMapperImpl extends
     for (int clusterId : oClass.getClusterIds()) {
       this.clusterId2OrientClassMap.put(Integer.valueOf(clusterId), orientClass);
     }
-    BeanAccess access = orientClass.prototype.access();
+    BeanAccess access = orientClass.getPrototype().access();
     Set<String> propertyNames;
     if (access.isVirtual()) {
       propertyNames = Collections.emptySet();
@@ -266,7 +264,7 @@ public class OrientBeanMapperImpl extends
     // for each property in OrientDB class create corresponding property in according OrientBean
     for (OProperty oProperty : oClass.properties()) {
       if ((oProperty.getOwnerClass() == oClass) && isAcceptedProperty(oProperty)) {
-        WritableProperty<?> property = this.propertyBuilder.build(oProperty, orientClass.prototype);
+        WritableProperty<?> property = this.propertyBuilder.build(oProperty, orientClass.getPrototype());
         if (property != null) {
           propertyNames.remove(property.getName());
         }
@@ -287,10 +285,8 @@ public class OrientBeanMapperImpl extends
     if (name.startsWith("_")) {
       return false;
     }
-    if (name.equals(OrientBean.PROPERTY_ALIAS_ID) || name.equals(OrientBean.PROPERTY_ALIAS_VERSION)
-        || name.equals(Entity.PROPERTY_NAME_ID)) {
-      getLogger().debug("Ignoring sync of property {}.{} because the name is reserved.",
-          oProperty.getOwnerClass().getName(), name);
+    if (name.equals(OrientBean.PROPERTY_ALIAS_ID) || name.equals(OrientBean.PROPERTY_ALIAS_VERSION) || name.equals(Entity.PROPERTY_NAME_ID)) {
+      getLogger().debug("Ignoring sync of property {}.{} because the name is reserved.", oProperty.getOwnerClass().getName(), name);
       return false;
     }
     return true;
@@ -319,9 +315,9 @@ public class OrientBeanMapperImpl extends
         OrientClass superOrientClass = getOrCreateMapping(superClass);
         superOrientClasses.add(superOrientClass);
         if (superPrototype == null) {
-          superPrototype = superOrientClass.prototype;
+          superPrototype = superOrientClass.getPrototype();
         } else {
-          mixins[mixinIndex++] = superOrientClass.prototype;
+          mixins[mixinIndex++] = superOrientClass.getPrototype();
         }
       }
     } else {
@@ -345,7 +341,7 @@ public class OrientBeanMapperImpl extends
       return this.documentPrototype;
     }
     OrientClass orientClass = getOrCreateMapping(oClass);
-    return orientClass.prototype;
+    return orientClass.getPrototype();
   }
 
   @Override
@@ -531,7 +527,7 @@ public class OrientBeanMapperImpl extends
     public void setOClass(OClass oClass) {
 
       if (this.oClass != null) {
-        throw new IllegalStateException("OClass can be set only once: " + this.prototype.access().getSimpleName());
+        throw new IllegalStateException("OClass can be set only once: " + getPrototype().access().getSimpleName());
       }
       this.oClass = oClass;
     }
