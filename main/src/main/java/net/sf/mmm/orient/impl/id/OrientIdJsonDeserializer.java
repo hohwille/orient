@@ -21,7 +21,7 @@ import net.sf.mmm.util.data.api.id.Id;
  * An implementation of {@link JsonDeserializer} for {@link Id}.
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
 public class OrientIdJsonDeserializer extends JsonDeserializer<OrientId<?>> {
 
@@ -36,7 +36,7 @@ public class OrientIdJsonDeserializer extends JsonDeserializer<OrientId<?>> {
 
   /**
    * The constructor.
-   * 
+   *
    * @param beanMapper the {@link OrientBeanMapper}.
    */
   public OrientIdJsonDeserializer(OrientBeanMapper beanMapper) {
@@ -62,7 +62,7 @@ public class OrientIdJsonDeserializer extends JsonDeserializer<OrientId<?>> {
       OrientBean beanPrototype = this.beanMapper.getBeanPrototype(orientId.getOrid().getClusterId());
       if (beanPrototype != null) {
         Class<? extends Bean> beanClass = beanPrototype.access().getBeanClass();
-        orientId = orientId.withType(beanClass);
+        orientId = (OrientId<?>) orientId.withType(beanClass);
       }
     }
     return orientId;

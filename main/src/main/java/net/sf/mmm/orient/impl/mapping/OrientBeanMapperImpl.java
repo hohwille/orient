@@ -34,6 +34,7 @@ import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.base.mapping.AbstractDocumentBeanMapper;
 import net.sf.mmm.util.data.api.entity.Entity;
 import net.sf.mmm.util.data.api.id.Id;
+import net.sf.mmm.util.data.api.id.LongId;
 import net.sf.mmm.util.data.api.link.Link;
 import net.sf.mmm.util.data.base.link.IdLink;
 import net.sf.mmm.util.exception.api.ObjectMismatchException;
@@ -482,16 +483,14 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
    */
   public ORID convertId(Id<? extends OrientBean> id) {
 
-    if (id == null) {
-      return null;
-    }
     if (id instanceof OrientId) {
       return ((OrientId<?>) id).getOrid();
-    } else {
+    } else if (id instanceof LongId) {
       OrientClass orientClass = getOrCreateMapping(id.getType());
       int clusterId = orientClass.oClass.getDefaultClusterId();
-      return new ORecordId(clusterId, id.getId());
+      return new ORecordId(clusterId, ((LongId<?>) id).getIdAsLong());
     }
+    return null;
   }
 
   /**
