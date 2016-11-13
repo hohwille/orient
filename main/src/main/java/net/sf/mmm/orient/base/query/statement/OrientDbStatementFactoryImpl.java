@@ -20,7 +20,7 @@ import net.sf.mmm.util.query.base.statement.AbstractStatementFactory;
  * This is the implementation of {@link OrientDbStatementFactory}.
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
 public class OrientDbStatementFactoryImpl extends AbstractStatementFactory implements OrientDbStatementFactory {
 
@@ -61,11 +61,9 @@ public class OrientDbStatementFactoryImpl extends AbstractStatementFactory imple
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
-  public <E> OrientDbSelectStatement<E> selectFrom(EntityAlias<?> alias, Class<E> toClass,
-      PropertyPath<?>... constructorArgs) {
+  public <E> OrientDbSelectStatement<E> selectFrom(EntityAlias<?> alias, Class<E> toClass, PropertyPath<?>... constructorArgs) {
 
-    return new OrientDbSelectStatementImpl<>(this.dialect, alias, (Function) this.mapper, toClass,
-        constructorArgs);
+    return new OrientDbSelectStatementImpl<>(this.dialect, alias, (Function) this.mapper, toClass, constructorArgs);
   }
 
   @Override

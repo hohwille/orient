@@ -9,7 +9,7 @@ import net.sf.mmm.util.query.base.statement.SqlDialect;
  * The implementation of {@link SqlDialect} for <a href="http://orientdb.com/docs/2.1/SQL.html">OrientDB</a>.
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
 public class OrientDbDialect extends Object implements SqlDialect {
 

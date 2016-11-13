@@ -12,10 +12,9 @@ import net.sf.mmm.util.query.base.statement.AbstractDeleteStatement;
  * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
-public class OrientDbDeleteStatementImpl<E> extends AbstractDeleteStatement<E, OrientDbDeleteStatement<E>>
-    implements OrientDbDeleteStatement<E> {
+public class OrientDbDeleteStatementImpl<E> extends AbstractDeleteStatement<E, OrientDbDeleteStatement<E>> implements OrientDbDeleteStatement<E> {
 
   /**
    * The constructor.

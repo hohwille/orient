@@ -29,10 +29,9 @@ import net.sf.mmm.util.query.base.statement.AbstractSelectStatement;
  * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
-public class OrientDbSelectStatementImpl<E> extends
-    AbstractSelectStatement<E, OrientDbSelectStatement<E>, ODocument> implements OrientDbSelectStatement<E> {
+public class OrientDbSelectStatementImpl<E> extends AbstractSelectStatement<E, OrientDbSelectStatement<E>, ODocument> implements OrientDbSelectStatement<E> {
 
   /**
    * The constructor.
@@ -41,8 +40,7 @@ public class OrientDbSelectStatementImpl<E> extends
    * @param alias - see {@link #getAlias()}. E.g. {@link ODB#alias(OClass)}.
    * @param mapper - see {@link #getMapper()}.
    */
-  protected OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<E> alias,
-      Function<ODocument, E> mapper) {
+  protected OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<E> alias, Function<ODocument, E> mapper) {
     super(dialect, alias, mapper);
   }
 
@@ -57,8 +55,8 @@ public class OrientDbSelectStatementImpl<E> extends
    * @param constructorArgs - see
    *        {@link net.sf.mmm.util.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, Path...)}.
    */
-  public OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<?> alias, Function<ODocument, E> mapper,
-      Class<E> toClass, PropertyPath<?>... constructorArgs) {
+  public OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<?> alias, Function<ODocument, E> mapper, Class<E> toClass,
+      PropertyPath<?>... constructorArgs) {
     super(dialect, alias, mapper, toClass, constructorArgs);
   }
 
@@ -72,8 +70,7 @@ public class OrientDbSelectStatementImpl<E> extends
    *        {@link net.sf.mmm.util.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, PropertyPath...)}
    *        .
    */
-  public OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<?> alias, Function<ODocument, E> mapper,
-      PropertyPath<?>... paths) {
+  public OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<?> alias, Function<ODocument, E> mapper, PropertyPath<?>... paths) {
     super(dialect, alias, mapper, paths);
   }
 
@@ -119,8 +116,7 @@ public class OrientDbSelectStatementImpl<E> extends
    * @param mapper the {@link Function} to {@link Function#apply(Object) map} from {@link ODocument} to {@literal <E>}.
    * @return the new {@link OrientDbSelectStatement}.
    */
-  public static <E extends EntityBean> OrientDbSelectStatementImpl<E> ofBean(E prototype,
-      Function<ODocument, E> mapper) {
+  public static <E extends EntityBean> OrientDbSelectStatementImpl<E> ofBean(E prototype, Function<ODocument, E> mapper) {
 
     Alias<E> source = Alias.ofBean(prototype);
     return new OrientDbSelectStatementImpl<>(OrientDbDialect.INSTANCE, source, mapper);

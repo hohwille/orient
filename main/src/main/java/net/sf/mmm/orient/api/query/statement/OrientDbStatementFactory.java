@@ -12,7 +12,7 @@ import net.sf.mmm.util.query.api.statement.StatementFactory;
  * This is the interface extends {@link StatementFactory} for OrientDb.
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
 @ComponentSpecification
 public interface OrientDbStatementFactory extends StatementFactory, FeatureInsert {
@@ -24,8 +24,7 @@ public interface OrientDbStatementFactory extends StatementFactory, FeatureInser
   OrientDbSelectStatement<Object[]> selectFrom(EntityAlias<?> alias, PropertyPath<?>... paths);
 
   @Override
-  <E> OrientDbSelectStatement<E> selectFrom(EntityAlias<?> alias, Class<E> toClass,
-      PropertyPath<?>... constructorArgs);
+  <E> OrientDbSelectStatement<E> selectFrom(EntityAlias<?> alias, Class<E> toClass, PropertyPath<?>... constructorArgs);
 
   @Override
   <E> OrientDbDeleteStatement<E> deleteFrom(EntityAlias<E> alias);

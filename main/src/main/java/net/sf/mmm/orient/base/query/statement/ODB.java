@@ -11,12 +11,11 @@ import net.sf.mmm.util.query.base.path.Alias;
  * Helper class with {@link OrientDbDialect OrientDB} specific functions.
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
 public final class ODB {
 
-  private ODB() {
-  }
+  private ODB() {}
 
   /**
    * @param oClass the {@link OClass OrientDB Class}.

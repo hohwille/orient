@@ -10,7 +10,7 @@ import net.sf.mmm.util.query.api.statement.InsertStatement;
  * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
 public interface OrientDbInsertStatement<E> extends InsertStatement<E, OrientDbInsertStatement<E>> {
 

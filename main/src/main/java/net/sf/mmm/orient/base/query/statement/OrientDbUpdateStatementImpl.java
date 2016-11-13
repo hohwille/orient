@@ -13,10 +13,9 @@ import net.sf.mmm.util.query.base.statement.AbstractUpdateStatement;
  * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
  *
  * @author hohwille
- * @since 8.0.0
+ * @since 1.0.0
  */
-public class OrientDbUpdateStatementImpl<E> extends AbstractUpdateStatement<E, OrientDbUpdateStatement<E>>
-    implements OrientDbUpdateStatement<E> {
+public class OrientDbUpdateStatementImpl<E> extends AbstractUpdateStatement<E, OrientDbUpdateStatement<E>> implements OrientDbUpdateStatement<E> {
 
   /**
    * The constructor.
