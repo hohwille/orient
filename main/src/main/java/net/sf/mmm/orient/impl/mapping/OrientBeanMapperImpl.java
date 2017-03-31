@@ -34,8 +34,8 @@ import net.sf.mmm.util.bean.api.BeanAccess;
 import net.sf.mmm.util.bean.base.mapping.AbstractDocumentBeanMapper;
 import net.sf.mmm.util.data.api.entity.Entity;
 import net.sf.mmm.util.data.api.id.Id;
-import net.sf.mmm.util.data.api.id.LongId;
 import net.sf.mmm.util.data.api.link.Link;
+import net.sf.mmm.util.data.base.id.LongVersionId;
 import net.sf.mmm.util.data.base.link.IdLink;
 import net.sf.mmm.util.exception.api.ObjectMismatchException;
 import net.sf.mmm.util.property.api.ReadableProperty;
@@ -401,7 +401,7 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
       if (property != null) {
         if (Link.class.isAssignableFrom(property.getType().getRetrievalClass()) && (value != null)) {
           final ODocument oDocument = (ODocument) value;
-          Id id = OrientId.of(access.getBeanClass(), oDocument.getIdentity(), document.getVersion());
+          Id id = OrientId.of(access.getBeanClass(), oDocument.getIdentity(), Long.valueOf(document.getVersion()));
           IdLink<?> link = IdLink.valueOf(id, x -> toBean(oDocument));
           property.setValue(link);
         } else {
@@ -411,7 +411,7 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
     }
     ORID identity = document.getIdentity();
     if (identity != null) {
-      Id<?> id = OrientId.of(access.getBeanClass(), identity, document.getVersion());
+      Id<?> id = OrientId.of(access.getBeanClass(), identity, Long.valueOf(document.getVersion()));
       bean.setId(id);
     }
   }
@@ -481,14 +481,15 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
    * @param id the {@link Id} to convert.
    * @return the {@link Id} as {@link ORID}.
    */
+  @Override
   public ORID convertId(Id<? extends OrientBean> id) {
 
     if (id instanceof OrientId) {
       return ((OrientId<?>) id).getOrid();
-    } else if (id instanceof LongId) {
+    } else if (id instanceof LongVersionId) {
       OrientClass orientClass = getOrCreateMapping(id.getType());
       int clusterId = orientClass.oClass.getDefaultClusterId();
-      return new ORecordId(clusterId, ((LongId<?>) id).getIdAsLong());
+      return new ORecordId(clusterId, ((LongVersionId<?>) id).getIdAsLong());
     }
     return null;
   }

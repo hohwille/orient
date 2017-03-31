@@ -5,8 +5,8 @@ package net.sf.mmm.orient.base.id;
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.id.ORecordId;
 
-import net.sf.mmm.util.data.api.id.AbstractId;
 import net.sf.mmm.util.data.api.id.Id;
+import net.sf.mmm.util.data.base.id.AbstractVersionId;
 
 /**
  * This is the implementation of {@link Id} for a native {@link ORID}.
@@ -16,7 +16,7 @@ import net.sf.mmm.util.data.api.id.Id;
  * @author hohwille
  * @since 1.0.0
  */
-public class OrientId<E> extends AbstractId<E> {
+public class OrientId<E> extends AbstractVersionId<E, ORID> {
 
   private final ORID orid;
 
@@ -27,7 +27,7 @@ public class OrientId<E> extends AbstractId<E> {
    * @param orid - see {@link #getOrid()}.
    * @param version - see {@link #getVersion()}.
    */
-  protected OrientId(Class<E> type, ORID orid, long version) {
+  protected OrientId(Class<E> type, ORID orid, Long version) {
     super(type, version);
     this.orid = orid;
   }
@@ -39,7 +39,7 @@ public class OrientId<E> extends AbstractId<E> {
   }
 
   @Override
-  protected <T> AbstractId<T> newId(Class<T> newType, long newVersion) {
+  protected <T> OrientId<T> newId(Class<T> newType, Long newVersion) {
 
     return new OrientId<>(newType, this.orid, newVersion);
   }
@@ -60,7 +60,7 @@ public class OrientId<E> extends AbstractId<E> {
    */
   public static <E> OrientId<E> of(Class<E> type, ORID orid) {
 
-    return of(type, orid, VERSION_LATEST);
+    return of(type, orid, null);
   }
 
   /**
@@ -70,7 +70,7 @@ public class OrientId<E> extends AbstractId<E> {
    * @param version the {@link #getVersion() version}.
    * @return the new {@link OrientId} or {@code null} if the given {@link ORID} was {@code null}.
    */
-  public static <E> OrientId<E> of(Class<E> type, ORID orid, long version) {
+  public static <E> OrientId<E> of(Class<E> type, ORID orid, Long version) {
 
     if (orid == null) {
       return null;
@@ -86,7 +86,7 @@ public class OrientId<E> extends AbstractId<E> {
    */
   public static <E> OrientId<E> of(Class<E> type, String orid) {
 
-    return of(type, new ORecordId(orid), VERSION_LATEST);
+    return of(type, new ORecordId(orid), null);
   }
 
   /**
@@ -96,7 +96,7 @@ public class OrientId<E> extends AbstractId<E> {
    * @param version the {@link #getVersion() version}.
    * @return the new {@link OrientId} or {@code null} if the given {@link ORID} was {@code null}.
    */
-  public static <E> OrientId<E> of(Class<E> type, String orid, long version) {
+  public static <E> OrientId<E> of(Class<E> type, String orid, Long version) {
 
     if (orid == null) {
       return null;
