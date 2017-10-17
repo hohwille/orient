@@ -5,7 +5,7 @@ package net.sf.mmm.orient.base.query.statement;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
-import net.sf.mmm.util.query.base.path.Alias;
+import net.sf.mmm.query.base.path.Alias;
 
 /**
  * Helper class with {@link OrientDbDialect OrientDB} specific functions.

@@ -11,22 +11,21 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import com.orientechnologies.orient.core.sql.query.OSQLSynchQuery;
 
+import net.sf.mmm.bean.api.BeanFactory;
+import net.sf.mmm.bean.api.entity.EntityBean;
 import net.sf.mmm.orient.api.query.statement.OrientDbSelectStatement;
-import net.sf.mmm.util.bean.api.BeanFactory;
-import net.sf.mmm.util.bean.api.entity.EntityBean;
-import net.sf.mmm.util.property.api.path.PropertyPath;
-import net.sf.mmm.util.query.api.path.EntityAlias;
-import net.sf.mmm.util.query.api.path.Path;
-import net.sf.mmm.util.query.api.variable.Variable;
-import net.sf.mmm.util.query.base.QueryMode;
-import net.sf.mmm.util.query.base.feature.FeatureLetImpl;
-import net.sf.mmm.util.query.base.path.Alias;
-import net.sf.mmm.util.query.base.statement.AbstractSelectStatement;
+import net.sf.mmm.property.api.path.PropertyPath;
+import net.sf.mmm.query.api.path.EntityAlias;
+import net.sf.mmm.query.api.variable.Variable;
+import net.sf.mmm.query.base.QueryMode;
+import net.sf.mmm.query.base.feature.FeatureLetImpl;
+import net.sf.mmm.query.base.path.Alias;
+import net.sf.mmm.query.base.statement.AbstractSelectStatement;
 
 /**
  * Implementation of {@link OrientDbSelectStatement}.
  *
- * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
+ * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.bean.api.Bean}).
  *
  * @author hohwille
  * @since 1.0.0
@@ -41,6 +40,7 @@ public class OrientDbSelectStatementImpl<E> extends AbstractSelectStatement<E, O
    * @param mapper - see {@link #getMapper()}.
    */
   protected OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<E> alias, Function<ODocument, E> mapper) {
+
     super(dialect, alias, mapper);
   }
 
@@ -51,12 +51,13 @@ public class OrientDbSelectStatementImpl<E> extends AbstractSelectStatement<E, O
    * @param alias - see {@link #getAlias()}. E.g. {@link ODB#alias(OClass)}.
    * @param mapper - see {@link #getMapper()}.
    * @param toClass - see
-   *        {@link net.sf.mmm.util.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, Path...)}.
+   *        {@link net.sf.mmm.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, net.sf.mmm.query.api.path.Path...)}.
    * @param constructorArgs - see
-   *        {@link net.sf.mmm.util.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, Path...)}.
+   *        {@link net.sf.mmm.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, net.sf.mmm.query.api.path.Path...)}.
    */
   public OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<?> alias, Function<ODocument, E> mapper, Class<E> toClass,
       PropertyPath<?>... constructorArgs) {
+
     super(dialect, alias, mapper, toClass, constructorArgs);
   }
 
@@ -67,10 +68,11 @@ public class OrientDbSelectStatementImpl<E> extends AbstractSelectStatement<E, O
    * @param alias - see {@link #getAlias()}. E.g. {@link ODB#alias(OClass)}.
    * @param mapper - see {@link #getMapper()}.
    * @param paths - see
-   *        {@link net.sf.mmm.util.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, PropertyPath...)}
+   *        {@link net.sf.mmm.query.api.statement.StatementFactory#selectFrom(EntityAlias, Class, PropertyPath...)}
    *        .
    */
   public OrientDbSelectStatementImpl(OrientDbDialect dialect, EntityAlias<?> alias, Function<ODocument, E> mapper, PropertyPath<?>... paths) {
+
     super(dialect, alias, mapper, paths);
   }
 
@@ -113,7 +115,8 @@ public class OrientDbSelectStatementImpl<E> extends AbstractSelectStatement<E, O
   /**
    * @param <E> the generic type of the {@link EntityBean}.
    * @param prototype the {@link BeanFactory#createPrototype(Class) prototype} of the {@link EntityBean}.
-   * @param mapper the {@link Function} to {@link Function#apply(Object) map} from {@link ODocument} to {@literal <E>}.
+   * @param mapper the {@link Function} to {@link Function#apply(Object) map} from {@link ODocument} to
+   *        {@literal <E>}.
    * @return the new {@link OrientDbSelectStatement}.
    */
   public static <E extends EntityBean> OrientDbSelectStatementImpl<E> ofBean(E prototype, Function<ODocument, E> mapper) {

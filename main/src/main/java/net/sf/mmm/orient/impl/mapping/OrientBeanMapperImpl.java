@@ -18,10 +18,13 @@ import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
-import com.orientechnologies.orient.core.metadata.schema.OSchemaProxy;
+import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.record.ORecordInternal;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
+import net.sf.mmm.bean.api.Bean;
+import net.sf.mmm.bean.api.BeanAccess;
+import net.sf.mmm.bean.base.mapping.AbstractDocumentBeanMapper;
 import net.sf.mmm.orient.api.bean.Edge;
 import net.sf.mmm.orient.api.bean.OrientBean;
 import net.sf.mmm.orient.api.bean.Vertex;
@@ -29,17 +32,14 @@ import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
 import net.sf.mmm.orient.base.id.OrientId;
 import net.sf.mmm.orient.impl.property.PropertyBuilder;
 import net.sf.mmm.orient.impl.property.PropertyBuilderImpl;
-import net.sf.mmm.util.bean.api.Bean;
-import net.sf.mmm.util.bean.api.BeanAccess;
-import net.sf.mmm.util.bean.base.mapping.AbstractDocumentBeanMapper;
+import net.sf.mmm.property.api.ReadableProperty;
+import net.sf.mmm.property.api.WritableProperty;
 import net.sf.mmm.util.data.api.entity.Entity;
 import net.sf.mmm.util.data.api.id.Id;
 import net.sf.mmm.util.data.api.link.Link;
 import net.sf.mmm.util.data.base.id.LongVersionId;
 import net.sf.mmm.util.data.base.link.IdLink;
 import net.sf.mmm.util.exception.api.ObjectMismatchException;
-import net.sf.mmm.util.property.api.ReadableProperty;
-import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.ReflectionUtil;
 import net.sf.mmm.util.reflect.base.ReflectionUtilImpl;
 import net.sf.mmm.util.reflect.impl.SimpleGenericTypeImpl;
@@ -72,6 +72,7 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
    *
    */
   public OrientBeanMapperImpl() {
+
     super();
     this.clusterId2OrientClassMap = new ConcurrentHashMap<>();
   }
@@ -197,7 +198,7 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
   }
 
   @Override
-  public void syncSchema(OSchemaProxy schema) {
+  public void syncSchema(OSchema schema) {
 
     getLogger().debug("Synchronizing OrientDB schema started...");
     // two-way-sync:
@@ -216,7 +217,7 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
     getLogger().debug("Synchronizing OrientDB schema completed...");
   }
 
-  private OClass syncClass(OrientClass orientClass, OSchemaProxy schema) {
+  private OClass syncClass(OrientClass orientClass, OSchema schema) {
 
     // only create OClass if not exists, OProperty created afterwards in syncClass(OClass)
     BeanAccess access = orientClass.getPrototype().access();
@@ -510,6 +511,7 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
      * @param prototype the {@link Bean} prototype.
      */
     public OrientClass(OrientBean prototype) {
+
       super(prototype);
     }
 
@@ -560,7 +562,10 @@ public class OrientBeanMapperImpl extends AbstractDocumentBeanMapper<ODocument, 
       ODocument document;
       if (id != null) {
         document = new ODocument(className, convertId(id));
-        ORecordInternal.setVersion(document.getRecord(), (int) id.getVersion());
+        Comparable<?> idVersion = id.getVersion();
+        if (idVersion instanceof Number) {
+          ORecordInternal.setVersion(document.getRecord(), ((Number) idVersion).intValue());
+        }
       } else {
         document = new ODocument(className);
       }

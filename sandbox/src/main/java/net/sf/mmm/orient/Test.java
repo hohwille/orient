@@ -2,11 +2,11 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient;
 
-import com.orientechnologies.orient.core.db.OPartitionedDatabasePool;
-import com.orientechnologies.orient.core.db.OPartitionedDatabasePoolFactory;
-import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.db.OrientDB;
+import com.orientechnologies.orient.core.db.OrientDBConfig;
+import com.orientechnologies.orient.core.db.document.ODatabaseDocument;
 import com.orientechnologies.orient.core.id.ORecordId;
-import com.orientechnologies.orient.core.metadata.OMetadataDefault;
+import com.orientechnologies.orient.core.metadata.OMetadata;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
@@ -28,12 +28,13 @@ public class Test {
   public static void main(String[] args) {
 
     OrientBeanMapper beanMapper = createBeanMapper();
-    OPartitionedDatabasePoolFactory factory = new OPartitionedDatabasePoolFactory();
-    OPartitionedDatabasePool pool = factory.get("remote:localhost/mmm", "admin", "admin");
-    ODatabaseDocumentTx connection = pool.acquire();
-    OMetadataDefault metadata = connection.getMetadata();
+    OrientDBConfig configuration = OrientDBConfig.defaultConfig();
+    OrientDB db = new OrientDB("remote:localhost", configuration);
+    ODatabaseDocument session = db.open("mmm", "admin", "admin");
+    // ODatabaseDocumentTx connection = pool.acquire();
+    OMetadata metadata = session.getMetadata();
     beanMapper.syncSchema(metadata.getSchema());
-    ODocument doc = connection.load(new ORecordId("#17:501"));
+    ODocument doc = session.load(new ORecordId("#17:501"));
     Country bean = beanMapper.toBean(doc);
     System.out.println(bean);
     bean.Inhabitants().set(9876543210L);
@@ -41,7 +42,7 @@ public class Test {
     Object field = doc.field("Inhabitants");
     System.out.println(field);
     doc.save();
-    connection.close();
+    session.close();
   }
 
   private static OrientBeanMapper createBeanMapper() {

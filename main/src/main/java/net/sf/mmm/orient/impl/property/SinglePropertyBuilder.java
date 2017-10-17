@@ -9,18 +9,18 @@ import com.orientechnologies.orient.core.metadata.schema.OClass;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
+import net.sf.mmm.bean.api.BeanAccess;
 import net.sf.mmm.orient.api.bean.OrientBean;
-import net.sf.mmm.util.bean.api.BeanAccess;
+import net.sf.mmm.property.api.AbstractProperty;
+import net.sf.mmm.property.api.WritableProperty;
 import net.sf.mmm.util.component.api.ComponentSpecification;
-import net.sf.mmm.util.property.api.AbstractProperty;
-import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 import net.sf.mmm.util.validation.base.AbstractValidator;
 import net.sf.mmm.util.validation.base.text.ValidatorPattern;
 
 /**
- * This is the interface for an {@link AbstractPropertyBuilder} responsible for a single {@link #getType() type} of
- * {@link OProperty properties}.
+ * This is the interface for an {@link AbstractPropertyBuilder} responsible for a single {@link #getType()
+ * type} of {@link OProperty properties}.
  *
  * @param <V> the generic type of the {@link WritableProperty#getValue() property value}.
  *
@@ -36,8 +36,8 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
   OType getType();
 
   /**
-   * @return the static and raw {@link Class} of the {@link WritableProperty#getType() bean property value type} this
-   *         {@link SinglePropertyBuilder} is responsible for.
+   * @return the static and raw {@link Class} of the {@link WritableProperty#getType() bean property value
+   *         type} this {@link SinglePropertyBuilder} is responsible for.
    */
   Class<? extends V> getValueClass();
 
@@ -75,11 +75,11 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
   }
 
   /**
-   * @param property the {@link WritableProperty property} to create in the given {@link OClass}, that is currently
-   *        missing.
+   * @param property the {@link WritableProperty property} to create in the given {@link OClass}, that is
+   *        currently missing.
    * @param oClass the {@link OClass} of the OrientDB schema.
-   * @return the created {@link OProperty}. May be {@code null} if the {@link WritableProperty#getType() property type}
-   *         is not supported.
+   * @return the created {@link OProperty}. May be {@code null} if the {@link WritableProperty#getType()
+   *         property type} is not supported.
    */
   default OProperty build(WritableProperty<V> property, OClass oClass) {
 
@@ -95,13 +95,14 @@ public interface SinglePropertyBuilder<V> extends AbstractPropertyBuilder {
   /**
    * @param oProperty the {@link OProperty}.
    * @return the {@link Class} reflecting the corresponding {@link WritableProperty} type such as e.g.
-   *         {@link net.sf.mmm.util.property.api.lang.StringProperty} for {@link OType#STRING}.
+   *         {@link net.sf.mmm.property.api.lang.StringProperty} for {@link OType#STRING}.
    */
   Class<? extends WritableProperty<V>> getPropertyType(OProperty oProperty);
 
   /**
    * @param oProperty the {@link OProperty}.
-   * @return the {@link GenericType} reflecting the corresponding {@link WritableProperty#getType() value type}.
+   * @return the {@link GenericType} reflecting the corresponding {@link WritableProperty#getType() value
+   *         type}.
    */
   GenericType<? extends V> getValueType(OProperty oProperty);
 

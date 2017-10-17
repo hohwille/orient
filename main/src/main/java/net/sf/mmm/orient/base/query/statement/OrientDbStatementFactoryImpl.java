@@ -12,9 +12,9 @@ import net.sf.mmm.orient.api.query.statement.OrientDbInsertStatement;
 import net.sf.mmm.orient.api.query.statement.OrientDbSelectStatement;
 import net.sf.mmm.orient.api.query.statement.OrientDbStatementFactory;
 import net.sf.mmm.orient.api.query.statement.OrientDbUpdateStatement;
-import net.sf.mmm.util.property.api.path.PropertyPath;
-import net.sf.mmm.util.query.api.path.EntityAlias;
-import net.sf.mmm.util.query.base.statement.AbstractStatementFactory;
+import net.sf.mmm.property.api.path.PropertyPath;
+import net.sf.mmm.query.api.path.EntityAlias;
+import net.sf.mmm.query.base.statement.AbstractStatementFactory;
 
 /**
  * This is the implementation of {@link OrientDbStatementFactory}.
@@ -32,6 +32,7 @@ public class OrientDbStatementFactoryImpl extends AbstractStatementFactory imple
    * The constructor.
    */
   public OrientDbStatementFactoryImpl() {
+
     this(OrientDbDialect.INSTANCE);
   }
 
@@ -41,6 +42,7 @@ public class OrientDbStatementFactoryImpl extends AbstractStatementFactory imple
    * @param dialect the {@link OrientDbDialect} to use.
    */
   public OrientDbStatementFactoryImpl(OrientDbDialect dialect) {
+
     super();
     this.dialect = dialect;
   }

@@ -5,15 +5,15 @@ package net.sf.mmm.util.query.base.example;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import net.sf.mmm.bean.api.entity.EntityBean;
 import net.sf.mmm.orient.api.bean.OrientBean;
-import net.sf.mmm.util.bean.api.entity.EntityBean;
+import net.sf.mmm.property.api.WritableProperty;
+import net.sf.mmm.property.api.lang.WritableBooleanProperty;
+import net.sf.mmm.property.api.lang.WritableStringProperty;
+import net.sf.mmm.property.api.link.LinkProperty;
+import net.sf.mmm.property.api.math.IntegerProperty;
+import net.sf.mmm.property.api.math.WritableIntegerProperty;
 import net.sf.mmm.util.lang.api.Orientation;
-import net.sf.mmm.util.property.api.WritableProperty;
-import net.sf.mmm.util.property.api.lang.WritableBooleanProperty;
-import net.sf.mmm.util.property.api.lang.WritableStringProperty;
-import net.sf.mmm.util.property.api.link.LinkProperty;
-import net.sf.mmm.util.property.api.math.IntegerProperty;
-import net.sf.mmm.util.property.api.math.WritableIntegerProperty;
 import net.sf.mmm.util.validation.base.Mandatory;
 
 /**

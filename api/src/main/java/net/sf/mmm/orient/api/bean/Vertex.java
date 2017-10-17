@@ -15,7 +15,7 @@ import javax.inject.Named;
 public interface Vertex extends OrientBean {
 
   /**
-   * The {@link net.sf.mmm.util.bean.api.BeanAccess#getSimpleName() name} corresponding to
+   * The {@link net.sf.mmm.bean.api.BeanAccess#getSimpleName() name} corresponding to
    * {@link com.orientechnologies.orient.core.metadata.schema.OClass#getName()}.
    */
   String NAME = "V";

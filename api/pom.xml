@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-util-bean</artifactId>
+      <artifactId>mmm-bean-api</artifactId>
     </dependency>
     <dependency>
       <!-- only for javadoc here so a pure JSON client does not require to depend on OrientDB -->

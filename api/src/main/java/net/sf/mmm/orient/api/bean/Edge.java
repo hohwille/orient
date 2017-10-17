@@ -6,7 +6,7 @@ import java.beans.Transient;
 
 import javax.inject.Named;
 
-import net.sf.mmm.util.property.api.link.LinkProperty;
+import net.sf.mmm.property.api.link.LinkProperty;
 
 /**
  * This is the interface for an edge. An edge connects two instances of {@link Vertex}. It represents the
@@ -20,7 +20,7 @@ import net.sf.mmm.util.property.api.link.LinkProperty;
 public interface Edge extends OrientBean {
 
   /**
-   * The {@link net.sf.mmm.util.bean.api.BeanAccess#getSimpleName() name} corresponding to
+   * The {@link net.sf.mmm.bean.api.BeanAccess#getSimpleName() name} corresponding to
    * {@link com.orientechnologies.orient.core.metadata.schema.OClass#getName()}.
    */
   String NAME = "E";

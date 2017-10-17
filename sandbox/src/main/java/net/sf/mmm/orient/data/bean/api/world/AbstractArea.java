@@ -5,7 +5,7 @@ package net.sf.mmm.orient.data.bean.api.world;
 import net.sf.mmm.orient.data.bean.api.AbstractCode;
 import net.sf.mmm.orient.data.bean.api.AbstractLocalizedName;
 import net.sf.mmm.orient.data.bean.api.AbstractLocation;
-import net.sf.mmm.util.property.api.math.LongProperty;
+import net.sf.mmm.property.api.math.LongProperty;
 
 /**
  * This is the abstract base class for an area like a country, state, city, etc.
@@ -21,8 +21,8 @@ public interface AbstractArea extends AbstractLocalizedName, AbstractCode, Abstr
   LongProperty Area();
 
   /**
-   * @return the optional number of inhabitants of this area. Please note that this value frequently changes and will
-   *         typically be out-dated. So consider it as an estimate.
+   * @return the optional number of inhabitants of this area. Please note that this value frequently changes
+   *         and will typically be out-dated. So consider it as an estimate.
    */
   LongProperty Inhabitants();
 

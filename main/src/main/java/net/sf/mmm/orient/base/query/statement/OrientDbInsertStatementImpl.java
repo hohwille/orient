@@ -3,13 +3,13 @@
 package net.sf.mmm.orient.base.query.statement;
 
 import net.sf.mmm.orient.api.query.statement.OrientDbInsertStatement;
-import net.sf.mmm.util.query.api.path.EntityAlias;
-import net.sf.mmm.util.query.base.statement.AbstractInsertStatement;
+import net.sf.mmm.query.api.path.EntityAlias;
+import net.sf.mmm.query.base.statement.AbstractInsertStatement;
 
 /**
  * Implementation of {@link OrientDbInsertStatement}.
  *
- * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
+ * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.bean.api.Bean}).
  *
  * @author hohwille
  * @since 1.0.0
@@ -23,6 +23,7 @@ public class OrientDbInsertStatementImpl<E> extends AbstractInsertStatement<E, O
    * @param alias - see {@link #getAlias()}.
    */
   public OrientDbInsertStatementImpl(OrientDbDialect dialect, EntityAlias<E> alias) {
+
     super(dialect, alias);
   }
 

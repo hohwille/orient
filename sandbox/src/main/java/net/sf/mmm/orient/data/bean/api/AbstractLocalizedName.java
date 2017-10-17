@@ -3,7 +3,7 @@
 package net.sf.mmm.orient.data.bean.api;
 
 import net.sf.mmm.orient.api.bean.Vertex;
-import net.sf.mmm.util.property.api.lang.StringProperty;
+import net.sf.mmm.property.api.lang.StringProperty;
 
 /**
  * This is the abstract base class for a {@link Vertex} that has a {@link #Name()}.
@@ -14,8 +14,8 @@ import net.sf.mmm.util.property.api.lang.StringProperty;
 public interface AbstractLocalizedName extends AbstractName {
 
   /**
-   * @return the optional native variant of {@link #Name()}. That is the localized {@link #Name() name} in the native
-   *         language of this object (e.g. in case of a Country or Language).
+   * @return the optional native variant of {@link #Name()}. That is the localized {@link #Name() name} in the
+   *         native language of this object (e.g. in case of a Country or Language).
    */
   StringProperty NativeName();
 

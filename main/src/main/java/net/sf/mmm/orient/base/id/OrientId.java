@@ -18,6 +18,8 @@ import net.sf.mmm.util.data.base.id.AbstractVersionId;
  */
 public class OrientId<E> extends AbstractVersionId<E, ORID> {
 
+  private static final long serialVersionUID = 1L;
+
   private final ORID orid;
 
   /**
@@ -28,6 +30,7 @@ public class OrientId<E> extends AbstractVersionId<E, ORID> {
    * @param version - see {@link #getVersion()}.
    */
   protected OrientId(Class<E> type, ORID orid, Long version) {
+
     super(type, version);
     this.orid = orid;
   }

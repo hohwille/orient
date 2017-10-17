@@ -3,8 +3,8 @@
 package net.sf.mmm.orient.data.bean.api.world;
 
 import net.sf.mmm.orient.data.bean.api.AbstractCode;
-import net.sf.mmm.util.property.api.link.LinkListProperty;
-import net.sf.mmm.util.property.api.link.LinkProperty;
+import net.sf.mmm.property.api.link.LinkListProperty;
+import net.sf.mmm.property.api.link.LinkProperty;
 
 /**
  * TODO: this class ...

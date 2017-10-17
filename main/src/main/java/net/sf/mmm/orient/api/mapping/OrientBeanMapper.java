@@ -4,12 +4,13 @@ package net.sf.mmm.orient.api.mapping;
 
 import com.orientechnologies.orient.core.id.ORID;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import com.orientechnologies.orient.core.metadata.schema.OSchema;
 import com.orientechnologies.orient.core.metadata.schema.OSchemaProxy;
 import com.orientechnologies.orient.core.record.impl.ODocument;
 
+import net.sf.mmm.bean.api.BeanFactory;
+import net.sf.mmm.bean.api.mapping.DocumentBeanMapper;
 import net.sf.mmm.orient.api.bean.OrientBean;
-import net.sf.mmm.util.bean.api.BeanFactory;
-import net.sf.mmm.util.bean.api.mapping.DocumentBeanMapper;
 import net.sf.mmm.util.data.api.id.Id;
 
 /**
@@ -27,7 +28,7 @@ public interface OrientBeanMapper extends DocumentBeanMapper<ODocument, OrientBe
    *
    * @param schema the {@link OSchemaProxy}.
    */
-  void syncSchema(OSchemaProxy schema);
+  void syncSchema(OSchema schema);
 
   /**
    * Synchronizes a {@link OClass OrientDB class} with the according {@link OrientBean}.

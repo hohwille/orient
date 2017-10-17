@@ -15,7 +15,7 @@
 
   <properties>
     <mmm.flatten.mode>bom</mmm.flatten.mode>
-    <orientdb.version>2.1.9</orientdb.version>
+    <orientdb.version>3.0.0m1</orientdb.version>
   </properties>
 
   <dependencyManagement>
@@ -23,8 +23,8 @@
       <!-- BOM of mmm-util -->
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mmm-util-bom</artifactId>
-        <version>${net.sf.mmm.util.version}</version>
+        <artifactId>mmm-query-bom</artifactId>
+        <version>${net.sf.mmm.query.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

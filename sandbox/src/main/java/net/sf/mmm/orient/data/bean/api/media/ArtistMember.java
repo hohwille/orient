@@ -3,7 +3,7 @@
 package net.sf.mmm.orient.data.bean.api.media;
 
 import net.sf.mmm.orient.api.bean.Edge;
-import net.sf.mmm.util.property.api.lang.StringListProperty;
+import net.sf.mmm.property.api.lang.StringListProperty;
 
 /**
  * An {@link Edge} that links from an {@link ArtistGroup} to the {@link ArtistPerson}s that its members.

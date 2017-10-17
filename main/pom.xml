@@ -21,7 +21,7 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mmm-util-query</artifactId>
+      <artifactId>mmm-query-base</artifactId>
     </dependency>
     <dependency>
       <groupId>com.orientechnologies</groupId>

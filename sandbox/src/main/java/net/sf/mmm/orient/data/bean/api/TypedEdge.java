@@ -4,7 +4,7 @@ package net.sf.mmm.orient.data.bean.api;
 
 import net.sf.mmm.orient.api.bean.Edge;
 import net.sf.mmm.orient.data.bean.api.contact.Person;
-import net.sf.mmm.util.property.api.lang.StringProperty;
+import net.sf.mmm.property.api.lang.StringProperty;
 
 /**
  * An {@link Edge} that has a {@link #Type() type}.
@@ -15,8 +15,8 @@ import net.sf.mmm.util.property.api.lang.StringProperty;
 public interface TypedEdge extends Edge {
 
   /**
-   * @return the type of this {@link Edge}. It acts as a classifier for the link. E.g. if you link a {@link Person} to
-   *         an address
+   * @return the type of this {@link Edge}. It acts as a classifier for the link. E.g. if you link a
+   *         {@link Person} to an address
    */
   StringProperty Type();
 

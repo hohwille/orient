@@ -10,9 +10,9 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
+import net.sf.mmm.property.api.WritableProperty;
 import net.sf.mmm.util.component.api.ResourceMissingException;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
-import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**
@@ -24,8 +24,7 @@ import net.sf.mmm.util.reflect.api.GenericType;
  * @since 1.0.0
  */
 @SuppressWarnings("rawtypes")
-public abstract class SinglePropertyBuilderLinkBase<V> extends AbstractLoggableComponent
-    implements SinglePropertyBuilder<V> {
+public abstract class SinglePropertyBuilderLinkBase<V> extends AbstractLoggableComponent implements SinglePropertyBuilder<V> {
 
   private OrientBeanMapper beanMapper;
 
@@ -33,6 +32,7 @@ public abstract class SinglePropertyBuilderLinkBase<V> extends AbstractLoggableC
    * The constructor.
    */
   public SinglePropertyBuilderLinkBase() {
+
     super();
   }
 

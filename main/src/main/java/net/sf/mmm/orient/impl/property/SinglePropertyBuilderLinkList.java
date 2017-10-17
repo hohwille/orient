@@ -10,9 +10,9 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import javafx.collections.ObservableList;
 import net.sf.mmm.orient.api.bean.OrientBean;
+import net.sf.mmm.property.api.WritableProperty;
+import net.sf.mmm.property.api.link.LinkListProperty;
 import net.sf.mmm.util.data.api.link.Link;
-import net.sf.mmm.util.property.api.WritableProperty;
-import net.sf.mmm.util.property.api.link.LinkListProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**
@@ -29,6 +29,7 @@ public class SinglePropertyBuilderLinkList extends SinglePropertyBuilderLinkBase
    * The constructor.
    */
   public SinglePropertyBuilderLinkList() {
+
     super();
   }
 

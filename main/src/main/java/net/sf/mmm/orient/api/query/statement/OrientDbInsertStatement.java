@@ -2,7 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.api.query.statement;
 
-import net.sf.mmm.util.query.api.statement.InsertStatement;
+import net.sf.mmm.query.api.statement.InsertStatement;
 
 /**
  * Extends a regular {@link InsertStatement} for OrientDB with advanced features.

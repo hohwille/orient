@@ -3,14 +3,14 @@
 package net.sf.mmm.orient.base.query.statement;
 
 import net.sf.mmm.orient.api.query.statement.OrientDbUpdateStatement;
-import net.sf.mmm.util.query.api.path.EntityAlias;
-import net.sf.mmm.util.query.base.feature.FeatureUpsertImpl;
-import net.sf.mmm.util.query.base.statement.AbstractUpdateStatement;
+import net.sf.mmm.query.api.path.EntityAlias;
+import net.sf.mmm.query.base.feature.FeatureUpsertImpl;
+import net.sf.mmm.query.base.statement.AbstractUpdateStatement;
 
 /**
  * Implementation of {@link OrientDbUpdateStatement}.
  *
- * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.util.bean.api.Bean}).
+ * @param <E> the generic type of the queried object (typically a {@link net.sf.mmm.bean.api.Bean}).
  *
  * @author hohwille
  * @since 1.0.0
@@ -24,6 +24,7 @@ public class OrientDbUpdateStatementImpl<E> extends AbstractUpdateStatement<E, O
    * @param alias - see {@link #getAlias()}.
    */
   public OrientDbUpdateStatementImpl(OrientDbDialect dialect, EntityAlias<E> alias) {
+
     super(dialect, alias);
   }
 

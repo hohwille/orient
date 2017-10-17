@@ -3,7 +3,7 @@
 package net.sf.mmm.orient.data.bean.api;
 
 import net.sf.mmm.orient.api.bean.Vertex;
-import net.sf.mmm.util.property.api.lang.StringProperty;
+import net.sf.mmm.property.api.lang.StringProperty;
 import net.sf.mmm.util.validation.base.Mandatory;
 
 /**

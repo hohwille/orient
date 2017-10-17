@@ -7,8 +7,8 @@ import net.sf.mmm.orient.data.bean.api.world.City;
 import net.sf.mmm.orient.data.bean.api.world.Country;
 import net.sf.mmm.orient.data.bean.api.world.PostalCode;
 import net.sf.mmm.orient.data.bean.api.world.Region;
-import net.sf.mmm.util.property.api.lang.StringProperty;
-import net.sf.mmm.util.property.api.link.LinkProperty;
+import net.sf.mmm.property.api.lang.StringProperty;
+import net.sf.mmm.property.api.link.LinkProperty;
 import net.sf.mmm.util.validation.base.Mandatory;
 
 /**
@@ -26,8 +26,8 @@ public interface Address extends Vertex {
   StringProperty CityName();
 
   /**
-   * @return the {@link City} this address is located in. Optional but if set then {@link #CityName()} should be
-   *         {@link City#Name()}.
+   * @return the {@link City} this address is located in. Optional but if set then {@link #CityName()} should
+   *         be {@link City#Name()}.
    */
   LinkProperty<City> City();
 
@@ -43,19 +43,22 @@ public interface Address extends Vertex {
   LinkProperty<Region> Region();
 
   /**
-   * @return the {@link PostalCode} as {@link String}. Validation depends on the {@link Country#PostalCodeMode()}.
+   * @return the {@link PostalCode} as {@link String}. Validation depends on the
+   *         {@link Country#PostalCodeMode()}.
    */
   StringProperty Zip();
 
   /**
-   * @return the {@link PostalCode}. Optional but if set then {@link #Zip()} has to be {@link PostalCode#Code()}.
+   * @return the {@link PostalCode}. Optional but if set then {@link #Zip()} has to be
+   *         {@link PostalCode#Code()}.
    */
   LinkProperty<PostalCode> PostalCode();
 
   /**
-   * @return the Post Office (PO) box. It is a unique identifier for a locked box typically located on the premises of
-   *         the post office. In most countries a PO box has a numberic code. However {@link String} is used as this is
-   *         not ensured for all countries. is Has to be present if {@link #Street()} is empty.
+   * @return the Post Office (PO) box. It is a unique identifier for a locked box typically located on the
+   *         premises of the post office. In most countries a PO box has a numberic code. However
+   *         {@link String} is used as this is not ensured for all countries. is Has to be present if
+   *         {@link #Street()} is empty.
    */
   StringProperty PoBox();
 
@@ -65,8 +68,8 @@ public interface Address extends Vertex {
   StringProperty Street();
 
   /**
-   * @return the optional street number or house number. Please note that this is not strictly numeric (e.g. "7b" is a
-   *         valid value) and is therefore represented as {@link String}.
+   * @return the optional street number or house number. Please note that this is not strictly numeric (e.g.
+   *         "7b" is a valid value) and is therefore represented as {@link String}.
    */
   StringProperty StreetNumber();
 

@@ -3,8 +3,8 @@
 package net.sf.mmm.orient.data.bean.api.contact;
 
 import net.sf.mmm.orient.api.bean.Vertex;
-import net.sf.mmm.util.property.api.lang.StringProperty;
-import net.sf.mmm.util.property.api.time.LocalDateProperty;
+import net.sf.mmm.property.api.lang.StringProperty;
+import net.sf.mmm.property.api.time.LocalDateProperty;
 
 /**
  * This is the {@link net.sf.mmm.orient.api.bean.OrientBean} for a person.

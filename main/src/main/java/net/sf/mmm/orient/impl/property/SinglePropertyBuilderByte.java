@@ -7,9 +7,9 @@ import javax.inject.Named;
 import com.orientechnologies.orient.core.metadata.schema.OProperty;
 import com.orientechnologies.orient.core.metadata.schema.OType;
 
-import net.sf.mmm.util.property.api.WritableProperty;
-import net.sf.mmm.util.property.api.math.ByteProperty;
-import net.sf.mmm.util.property.api.math.ReadableByteProperty;
+import net.sf.mmm.property.api.WritableProperty;
+import net.sf.mmm.property.api.math.ByteProperty;
+import net.sf.mmm.property.api.math.ReadableByteProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**
@@ -25,6 +25,7 @@ public class SinglePropertyBuilderByte implements SinglePropertyBuilder<Number> 
    * The constructor.
    */
   public SinglePropertyBuilderByte() {
+
     super();
   }
 

@@ -2,8 +2,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.base.query.statement;
 
-import net.sf.mmm.util.query.api.variable.Variable;
-import net.sf.mmm.util.query.base.statement.SqlDialect;
+import net.sf.mmm.query.api.statement.SqlDialect;
+import net.sf.mmm.query.api.variable.Variable;
 
 /**
  * The implementation of {@link SqlDialect} for <a href="http://orientdb.com/docs/2.1/SQL.html">OrientDB</a>.
@@ -20,6 +20,7 @@ public class OrientDbDialect extends Object implements SqlDialect {
    * The constructor.
    */
   public OrientDbDialect() {
+
     super();
   }
 

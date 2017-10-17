@@ -2,11 +2,11 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.api.query.statement;
 
+import net.sf.mmm.property.api.path.PropertyPath;
+import net.sf.mmm.query.api.feature.FeatureInsert;
+import net.sf.mmm.query.api.path.EntityAlias;
+import net.sf.mmm.query.api.statement.StatementFactory;
 import net.sf.mmm.util.component.api.ComponentSpecification;
-import net.sf.mmm.util.property.api.path.PropertyPath;
-import net.sf.mmm.util.query.api.feature.FeatureInsert;
-import net.sf.mmm.util.query.api.path.EntityAlias;
-import net.sf.mmm.util.query.api.statement.StatementFactory;
 
 /**
  * This is the interface extends {@link StatementFactory} for OrientDb.

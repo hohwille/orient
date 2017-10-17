@@ -2,7 +2,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0 */
 package net.sf.mmm.orient.data.bean.api.media;
 
-import net.sf.mmm.util.property.api.time.DurationInSecondsProperty;
+import net.sf.mmm.property.api.time.DurationInSecondsProperty;
 
 /**
  * This is the abstract {@link net.sf.mmm.orient.api.bean.OrientBean} for a multi-media track such as an

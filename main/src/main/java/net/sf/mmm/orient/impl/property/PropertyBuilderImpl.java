@@ -16,11 +16,11 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 
 import net.sf.mmm.orient.api.bean.OrientBean;
 import net.sf.mmm.orient.api.mapping.OrientBeanMapper;
+import net.sf.mmm.property.api.WritableProperty;
 import net.sf.mmm.util.component.api.ResourceMissingException;
 import net.sf.mmm.util.component.base.AbstractComponent;
 import net.sf.mmm.util.component.base.AbstractLoggableComponent;
 import net.sf.mmm.util.exception.api.DuplicateObjectException;
-import net.sf.mmm.util.property.api.WritableProperty;
 import net.sf.mmm.util.reflect.api.GenericType;
 
 /**
@@ -42,6 +42,7 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
    * The constructor.
    */
   public PropertyBuilderImpl() {
+
     super();
     this.type2builderMap = new HashMap<>();
     this.class2builderMap = new HashMap<>();
@@ -85,8 +86,8 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
 
   /**
    * @param builder the {@link SinglePropertyBuilder} to register.
-   * @param allowOverride - {@code true} if the given {@link SinglePropertyBuilder} may override (replace) a previously
-   *        {@link #registerBuilder(SinglePropertyBuilder, boolean) registered} one.
+   * @param allowOverride - {@code true} if the given {@link SinglePropertyBuilder} may override (replace) a
+   *        previously {@link #registerBuilder(SinglePropertyBuilder, boolean) registered} one.
    */
   protected void registerBuilder(SinglePropertyBuilder<?> builder, boolean allowOverride) {
 
@@ -129,15 +130,14 @@ public class PropertyBuilderImpl extends AbstractLoggableComponent implements Pr
     super.doInitialized();
     for (OType type : OType.values()) {
       if (this.type2builderMap.get(type) == null) {
-        getLogger().warn(
-            "Unsupported OrientDB property type {}. Please register corresponding SinglePropertyBuilder.", type);
+        getLogger().warn("Unsupported OrientDB property type {}. Please register corresponding SinglePropertyBuilder.", type);
       }
     }
   }
 
   /**
-   * {@link #registerBuilder(SinglePropertyBuilder) Registers} the {@link SinglePropertyBuilder factories} for the
-   * common default types.
+   * {@link #registerBuilder(SinglePropertyBuilder) Registers} the {@link SinglePropertyBuilder factories} for
+   * the common default types.
    */
   protected void registerDefaults() {
 
